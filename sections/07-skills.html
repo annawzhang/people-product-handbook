@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>07 Skills · Handbook</title>
+<link rel="stylesheet" href="../styles.css"/>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><strong>07 Skills / SOP</strong><span>方法交给 Agent</span></div>
+  <nav class="nav">
+    <a href="../index.html">总览</a>
+    <a href="01-hiring.html">招聘</a>
+    <a href="02-talent.html">人才评估</a>
+    <a href="03-stats.html">人力量化</a>
+    <a href="04-voc.html">用户原声</a>
+    <a href="05-outreach.html">触达护栏</a>
+    <a href="06-hris.html">HRIS</a>
+    <a class="on" href="07-skills.html">Skills</a>
+  </nav>
+</header>
+<main class="wrap">
+  <div class="hero">
+    <h1>Cursor Skill + Playbook</h1>
+    <p class="muted">把已验证的流程写成 Agent 可执行说明；脚本只用虚构 fixture，不含真实飞书/API 地址。</p>
+    <a class="cta" href="https://github.com/annawzhang/pm-hr-skills">Demo · 仓库</a>
+    <a class="cta ghost" href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/hr-materials-audit">材料审核 Skill</a>
+  </div>
+
+  <h2>1. 架构图</h2>
+  <div class="mermaid">
+flowchart LR
+  U[用户在 Cursor 点名 Skill] --> S[SKILL.md]
+  S --> REF[references 字段字典]
+  S --> SCR[scripts 可跑示例]
+  S --> PB[playbooks SOP]
+  PB --> DEMO[对应 GitHub Demo]
+  SCR --> FIX[fixtures 虚构 JSON]
+  </div>
+
+  <h2>2. 「API」形态</h2>
+  <p class="muted">Skill 不是 HTTP，而是 Agent 触发契约：description 决定何时加载；正文规定步骤与禁止项。</p>
+  <table>
+    <thead><tr><th>资产</th><th>入口</th><th>本地调用</th></tr></thead>
+    <tbody>
+      <tr><td>材料审核 Skill</td><td><code>skills/hr-materials-audit/SKILL.md</code></td><td><code>python3 scripts/audit_rules.py --input fixtures/employees.json</code></td></tr>
+      <tr><td>结构化招聘 Skill</td><td><code>skills/structured-hiring/SKILL.md</code></td><td>产出评分卡/工具包模板</td></tr>
+      <tr><td>Playbooks</td><td><code>playbooks/*.md</code></td><td>招聘 / 触达 / VOC / 人力量化 SOP</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. Follow-up</h2>
+  <table>
+    <thead><tr><th>追问</th><th>答法</th></tr></thead>
+    <tbody>
+      <tr><td>Skill 和 Demo 仓库啥关系？</td><td>Demo 证明能跑；Skill 让别人的 Agent 按同一 SOP 做事。</td></tr>
+      <tr><td>如何避免泄露内部系统？</td><td>公开版去掉真实 URL/Token；规则保留为示例包。</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. 技术栈梳理</h2>
+  <p><span class="pill md">Markdown</span> <span class="pill py">Python 标准库脚本</span> Cursor Agent Skills 目录规范</p>
+
+  <h2>5. Best practices</h2>
+  <ul class="tight">
+    <li><code>description</code> 写清 WHAT + WHEN，便于自动发现。</li>
+    <li>默认 <code>disable-model-invocation: true</code>，重要 Skill 需显式点名。</li>
+    <li>脚本可 <code>--self-test</code>；fixture 提交进仓。</li>
+    <li>Playbook 用检查清单，避免空泛原则。</li>
+  </ul>
+
+  <h2>6. Demo 路径</h2>
+  <ol>
+    <li>打开仓库 README 表格，对照各 Demo 链接。</li>
+    <li>跑材料审核 <code>--self-test</code> 与 fixture 批处理。</li>
+    <li>把 Skill 拷进 Cursor Skills 目录，对话点名试一次。</li>
+  </ol>
+
+  <div class="warn">本手册与 Skills 均为求职/学习公开版，不代表任何雇主的内部系统。</div>
+
+  <div class="footer"><a href="06-hris.html">← HRIS</a> · <a href="../index.html">回总览</a></div>
+</main>
+</body>
+</html>

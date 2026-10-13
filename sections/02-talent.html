@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>02 人才评估 · Handbook</title>
+<link rel="stylesheet" href="../styles.css"/>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><strong>02 人才评估模型</strong><span>Explainable Talent Scoring</span></div>
+  <nav class="nav">
+    <a href="../index.html">总览</a>
+    <a href="01-hiring.html">招聘</a>
+    <a class="on" href="02-talent.html">人才评估</a>
+    <a href="03-stats.html">人力量化</a>
+    <a href="04-voc.html">用户原声</a>
+    <a href="05-outreach.html">触达护栏</a>
+    <a href="06-hris.html">HRIS</a>
+    <a href="07-skills.html">Skills</a>
+  </nav>
+</header>
+<main class="wrap">
+  <div class="hero">
+    <h1>八维可解释人才评分 + AB</h1>
+    <p class="muted">线索太多时先联系谁：可配置加权、维度贡献可解释、S+/S/A/B/C 分层跟进，用 NOT EXISTS 排他 AB 证明有效。</p>
+    <a class="cta" href="https://annawzhang.github.io/explainable-talent-scoring/">Demo · 报告</a>
+    <a class="cta ghost" href="https://github.com/annawzhang/explainable-talent-scoring">GitHub</a>
+  </div>
+
+  <h2>1. 架构图</h2>
+  <div class="mermaid">
+flowchart LR
+  SYN[synth.generate] --> FEAT[scoring.features]
+  CFG[config/scoring.toml] --> SCORE
+  FEAT --> SCORE[scoring.score]
+  SCORE --> TIER[S+/S/A/B/C]
+  TIER --> SIM[experiment.simulate]
+  SIM --> DB[(SQLite)]
+  DB --> FUN[funnel_by_tier]
+  DB --> AB[ab_result + z-test]
+  DB --> IDX[index_benchmark]
+  FUN & AB & IDX --> REP[report.render HTML]
+  </div>
+
+  <h3>AB 排他（核心）</h3>
+  <div class="mermaid">
+flowchart TB
+  P[线索池] --> A[分配 control / treatment]
+  A --> L1[纯对照]
+  A --> L2[纯实验]
+  A --> L3[混合样本]
+  L3 -.->|NOT EXISTS 排除| X[不参与转化对比]
+  L1 & L2 --> Z[双比例 z 检验回复率]
+  </div>
+
+  <h2>2. API / 模块调用</h2>
+  <table>
+    <thead><tr><th>调用</th><th>作用</th><th>关键输出</th></tr></thead>
+    <tbody>
+      <tr><td><code>load_config()</code></td><td>读 TOML 权重/阈值/分层</td><td>dimensions, tiers</td></tr>
+      <tr><td><code>generate(n, seed)</code></td><td>虚构候选人</td><td>Candidate[]</td></tr>
+      <tr><td><code>features(c, cfg)</code></td><td>八维 0–100 特征</td><td>含地域四因子梯度</td></tr>
+      <tr><td><code>score(c, cfg)</code></td><td>加权总分 + 贡献说明</td><td>total, tier, reason, missing</td></tr>
+      <tr><td><code>simulate(people, cfg)</code></td><td>跟进与事件写入 SQLite</td><td>db, scores</td></tr>
+      <tr><td><code>ab_result(db)</code></td><td>两组回复率 + z/p</td><td>control / treatment</td></tr>
+      <tr><td><code>layers(db)</code></td><td>纯对照/纯实验/混合人数</td><td>mixed 被排除</td></tr>
+      <tr><td><code>index_benchmark(db)</code></td><td>索引前后查询耗时</td><td>before_ms / after_ms</td></tr>
+      <tr><td><code>python3 run.py</code></td><td>一键出报告</td><td>docs/index.html, scores.csv</td></tr>
+    </tbody>
+  </table>
+
+  <h3>八维（公开口径）</h3>
+  <table>
+    <thead><tr><th>维度</th><th>权重口径</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td>赛道关联度</td><td>最高档之一</td><td>与目标赛道重合</td></tr>
+      <tr><td>导师网络 / 本地资源 / 内部连接</td><td>高</td><td>关系与转介绍</td></tr>
+      <tr><td>工程产出 / 顶会论文</td><td>中</td><td>产出类</td></tr>
+      <tr><td>地域关联度</td><td>四因子梯度</td><td>替代粗糙 0/1</td></tr>
+      <tr><td>学术引用</td><td>0（不计分）</td><td>噪声大，只展示</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. Follow-up</h2>
+  <table>
+    <thead><tr><th>追问</th><th>答法</th></tr></thead>
+    <tbody>
+      <tr><td>为什么不用机器学习排序？</td><td>业务要改得动、讲得清；先专家加权 + AB，再考虑学习排序。</td></tr>
+      <tr><td>混合样本为什么要扔掉？</td><td>同一人进两组会污染因果；NOT EXISTS 三层隔离。</td></tr>
+      <tr><td>准确率数字如何解读？</td><td>报告里是虚构数据上的识别提升（二元→梯度）；真实业务需重标定。</td></tr>
+      <tr><td>和招聘评分卡什么关系？</td><td>人才评分管「线索池优先级」；招聘评分卡管「岗位匹配与面试」。</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. 技术栈梳理</h2>
+  <table>
+    <thead><tr><th>层</th><th>选型</th></tr></thead>
+    <tbody>
+      <tr><td>语言</td><td>Python 3 标准库</td></tr>
+      <tr><td>配置</td><td>TOML（tomllib）</td></tr>
+      <tr><td>存储</td><td>SQLite（实验与漏斗）</td></tr>
+      <tr><td>统计</td><td>自写双比例 z（erfc）</td></tr>
+      <tr><td>交付</td><td>run.py → docs/ HTML + CSV</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Best practices</h2>
+  <ul class="tight">
+    <li>权重变更必须带一版 AB 或回溯校准，禁止「拍脑袋调参」。</li>
+    <li>缺失值显式进 missing，不要默当 0 分。</li>
+    <li>分层策略写进配置（S+ 优先建联…），产品和运营同一套语言。</li>
+    <li>慢查询先 explain 再加覆盖索引；报告里保留 before/after。</li>
+    <li>下一步增强：校准图 + Brier（可复用 People Stats Kit）。</li>
+  </ul>
+
+  <h2>6. Demo 路径</h2>
+  <ol>
+    <li>打开报告：看分层人数与示例卡片「主要得分来自…」。</li>
+    <li>讲清地域维度：二元标签 → 四因子梯度。</li>
+    <li>AB 段：回复率变化 + 混合样本排除 + SQL 加速。</li>
+    <li>本地 <code>python3 run.py</code> 证明可复现。</li>
+  </ol>
+
+  <div class="footer"><a href="01-hiring.html">← 招聘</a> · <a href="03-stats.html">下一板块：人力量化 →</a></div>
+</main>
+</body>
+</html>

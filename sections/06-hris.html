@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>06 HRIS · Handbook</title>
+<link rel="stylesheet" href="../styles.css"/>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><strong>06 HRIS 流程</strong><span>入转调离 · 编制 · OA</span></div>
+  <nav class="nav">
+    <a href="../index.html">总览</a>
+    <a href="01-hiring.html">招聘</a>
+    <a href="02-talent.html">人才评估</a>
+    <a href="03-stats.html">人力量化</a>
+    <a href="04-voc.html">用户原声</a>
+    <a href="05-outreach.html">触达护栏</a>
+    <a class="on" href="06-hris.html">HRIS</a>
+    <a href="07-skills.html">Skills</a>
+  </nav>
+</header>
+<main class="wrap">
+  <div class="hero">
+    <h1>可交互 HRIS 原型</h1>
+    <p class="muted">审批链按组织与编制实时算；通过后改人员数据；再按字段映射推 OA（含重试与幂等）。</p>
+    <a class="cta" href="https://annawzhang.github.io/hris-prototype/?demo">Demo · ?demo</a>
+    <a class="cta ghost" href="https://annawzhang.github.io/hris-prototype/tests.html">引擎测试</a>
+    <a class="cta ghost" href="https://github.com/annawzhang/hris-prototype">GitHub</a>
+  </div>
+
+  <h2>1. 架构图</h2>
+  <div class="mermaid">
+flowchart LR
+  UI[审批中心 / 组织 / 看板 / OA] --> WF[workflow.js]
+  WF --> DATA[虚构组织与编制]
+  WF --> CHAIN[buildChain 动态审批链]
+  CHAIN --> STATE[申请状态机]
+  STATE --> EFFECT[入职/转正/调岗/离职生效]
+  EFFECT --> OA[字段映射 + 校验 + 重试]
+  OA --> PAYLOAD[OA 报文预览]
+  </div>
+
+  <div class="mermaid">
+flowchart TB
+  subgraph onboard [入职]
+    A1[HRBP] --> A2[用人部门]
+    A2 --> A3{满编或高职级?}
+    A3 -->|是| A4[超编/高职级审批]
+  end
+  subgraph transfer [调岗]
+    B1[调出] --> B2[调入] --> B3{跨事业部?}
+    B3 -->|是| B4[两边负责人] --> B5[HRBP]
+    B3 -->|否| B5
+  end
+  </div>
+
+  <h2>2. API / 引擎调用</h2>
+  <table>
+    <thead><tr><th>能力</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><code>buildChain(type, payload)</code></td><td>按流程类型与编制生成审批链快照</td></tr>
+      <tr><td>批准 / 退回 / 驳回 / 撤回</td><td>身份校验：非当前节点不可操作</td></tr>
+      <tr><td>生效逻辑</td><td>入职加人、转正改状态、调岗改部门、离职回收</td></tr>
+      <tr><td>OA sync</td><td>映射、必填校验、502 退避重试、单号幂等</td></tr>
+    </tbody>
+  </table>
+
+  <h3>产品化 HTTP 建议</h3>
+<pre>POST /v1/workflows            { type, payload } → chain snapshot
+POST /v1/workflows/{id}/act   { action, comment, actor }
+GET  /v1/org/headcount
+POST /v1/oa/sync              { workflow_id } → { status, retries }</pre>
+
+  <h2>3. Follow-up</h2>
+  <table>
+    <thead><tr><th>追问</th><th>答法</th></tr></thead>
+    <tbody>
+      <tr><td>满编还能入职吗？</td><td>能，但自动加超编审批节点。</td></tr>
+      <tr><td>审批中组织变了怎么办？</td><td>链在提交时快照，进行中不受影响。</td></tr>
+      <tr><td>OA 失败？</td><td>退避重试，仍失败进补偿队列；成功单号幂等跳过。</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. 技术栈梳理</h2>
+  <p><span class="pill js">原生 JS</span> localStorage · 无后端 · tests.html</p>
+
+  <h2>5. Best practices</h2>
+  <ul class="tight">
+    <li>同一人多节点合并，避免重复点两次。</li>
+    <li>驳回必须写原因；看板监控超时单。</li>
+    <li>OA 字段映射表与代码一并评审。</li>
+  </ul>
+
+  <h2>6. Demo 路径</h2>
+  <ol>
+    <li>打开 <code>?demo</code> 自动走一单并同步 OA。</li>
+    <li>切换身份看待办变化。</li>
+    <li>满编部门发入职，指出超编节点。</li>
+  </ol>
+
+  <div class="footer"><a href="05-outreach.html">← 触达护栏</a> · <a href="07-skills.html">下一板块：Skills →</a></div>
+</main>
+</body>
+</html>

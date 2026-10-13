@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>01 结构化招聘 · Handbook</title>
+<link rel="stylesheet" href="../styles.css"/>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><strong>01 结构化招聘</strong><span>Hiring Copilot → Hiring Agent</span></div>
+  <nav class="nav">
+    <a href="../index.html">总览</a>
+    <a class="on" href="01-hiring.html">招聘</a>
+    <a href="02-talent.html">人才评估</a>
+    <a href="03-stats.html">人力量化</a>
+    <a href="04-voc.html">用户原声</a>
+    <a href="05-outreach.html">触达护栏</a>
+    <a href="06-hris.html">HRIS</a>
+    <a href="07-skills.html">Skills</a>
+  </nav>
+</header>
+<main class="wrap">
+  <div class="hero">
+    <h1>结构化招聘工作台与 Agent</h1>
+    <p class="muted">开岗先建评分卡；初筛每一分可追溯到简历原文；面试独立反馈；用漏斗与校准反证评分卡。</p>
+    <a class="cta" href="https://annawzhang.github.io/hiring-copilot/">Demo · Hiring Copilot</a>
+    <a class="cta ghost" href="https://annawzhang.github.io/hiring-copilot/tests.html">15 项引擎测试</a>
+    <a class="cta ghost" href="https://github.com/annawzhang/hiring-copilot">GitHub</a>
+  </div>
+
+  <h2>1. 架构图</h2>
+  <h3>当前：Hiring Copilot（看板 + 规则引擎）</h3>
+  <div class="mermaid">
+flowchart LR
+  UI[index.html 四页签] --> APP[app.js]
+  APP --> ENG[engine.js Hire.*]
+  ENG --> DATA[data.js 职位/评分卡/候选人]
+  ENG --> LS[(localStorage)]
+  APP --> UI
+  subgraph pages [页面]
+    P1[候选人看板]
+    P2[我的面试]
+    P3[职位与评分卡]
+    P4[招聘分析]
+  end
+  UI --- P1 & P2 & P3 & P4
+  </div>
+
+  <h3>下一刀：Hiring Agent（对话调用同一引擎）</h3>
+  <div class="mermaid">
+sequenceDiagram
+  participant U as 用户
+  participant A as Hiring Agent
+  participant H as Hire 引擎
+  participant S as Stats Kit可选
+  U->>A: 帮我处理超时简历
+  A->>H: slaBreaches(state, today)
+  H-->>A: 超时列表
+  A->>H: screen(cand, job)
+  H-->>A: 分数+证据
+  A->>H: message(invite, cand)
+  H-->>A: 邀约模板
+  A-->>U: 建议推进/淘汰 + 引用证据
+  Note over A,H: 反馈未齐 / 名额已满 / 需复盘会 → 硬拒绝
+  A-.->S: 开实验前 sample_size
+  </div>
+
+  <h2>2. API / 引擎调用（无后端 HTTP，浏览器内）</h2>
+  <p class="muted">公开版不调云端 LLM API。产品化时可把下表封成 <code>POST /v1/tools/*</code>，鉴权后由 Agent 调。</p>
+  <table>
+    <thead><tr><th>调用</th><th>入参</th><th>出参要点</th><th>护栏</th></tr></thead>
+    <tbody>
+      <tr><td><code>Hire.screen(cand, job, weights?)</code></td><td>候选人、职位、可选权重</td><td>total、attrs[].evidence、rec、knockouts</td><td>硬性条件不符→不推荐</td></tr>
+      <tr><td><code>Hire.advance(state, id, date)</code></td><td>状态、候选人、日期</td><td>更新 history</td><td>反馈未齐 / 非「建议录用」/ 超名额 → throw</td></tr>
+      <tr><td><code>Hire.reject(state, id, reason, date)</code></td><td>淘汰原因枚举</td><td>status=rejected</td><td>原因必选</td></tr>
+      <tr><td><code>Hire.submitFeedback(state, fb)</code></td><td>维度分、overall、note</td><td>写入 feedback</td><td>须在 panel；note≥15 字；不可重复</td></tr>
+      <tr><td><code>Hire.canSeeOthers(...)</code></td><td>viewer</td><td>bool</td><td>未提交不可见；HM 例外</td></tr>
+      <tr><td><code>Hire.aggregate(fbs)</code></td><td>反馈数组</td><td>decision / flags</td><td>分歧≥2 或有 1 分→复盘会</td></tr>
+      <tr><td><code>Hire.analytics(state, jobId)</code></td><td>职位</td><td>漏斗、渠道、校准、bins</td><td>—</td></tr>
+      <tr><td><code>Hire.message(kind, cand, extra)</code></td><td>invite/reject/offer</td><td>模板字符串</td><td>拒信不写原因细节</td></tr>
+      <tr><td><code>Hire.slaBreaches(state, today)</code></td><td>今天</td><td>超时列表</td><td>—</td></tr>
+    </tbody>
+  </table>
+
+  <h3>产品化 HTTP 建议（尚未实现）</h3>
+<pre>POST /v1/jobs/{id}/screen      { candidate_id }
+POST /v1/candidates/{id}/advance
+POST /v1/candidates/{id}/reject { reason }
+POST /v1/interviews/{id}/feedback
+GET  /v1/jobs/{id}/analytics
+POST /v1/agent/chat             { message, actor_id }  → tool_calls[]</pre>
+
+  <h2>3. Follow-up（面试追问怎么答）</h2>
+  <table>
+    <thead><tr><th>追问</th><th>答法要点</th></tr></thead>
+    <tbody>
+      <tr><td>为什么不用大模型直接打分？</td><td>初筛要可审计；关键词+证据是刻意选择。LLM 可做语义检索，但仍须回贴原文。</td></tr>
+      <tr><td>独立反馈和校准怎么配合？</td><td>提交前不可见防锚定；提交后看平均分偏差识别偏宽松/偏严。</td></tr>
+      <tr><td>和 Greenhouse 差在哪？</td><td>学的是结构化方法；公开版是教学复刻，无排班/邮件集成。</td></tr>
+      <tr><td>Agent 版如何防胡作非为？</td><td>只能调白名单工具；引擎 throw 即对用户说「规则拒绝」。</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. 技术栈梳理</h2>
+  <table>
+    <thead><tr><th>层</th><th>选型</th><th>原因</th></tr></thead>
+    <tbody>
+      <tr><td>UI</td><td>原生 HTML/CSS/JS</td><td>零构建，Pages 即演示</td></tr>
+      <tr><td>状态</td><td>localStorage</td><td>无后端也能推进/重置</td></tr>
+      <tr><td>引擎</td><td>纯函数 Hire.*</td><td>tests.html 可测</td></tr>
+      <tr><td>数据</td><td>种子 RNG 生成 54 人</td><td>可复现管道分布</td></tr>
+      <tr><td>未用</td><td>React / 云 LLM / DB</td><td>求职作品优先可打开、可讲清</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Best practices</h2>
+  <ul class="tight">
+    <li>开岗时和用人经理共同锁评分卡，之后不随意改权重「救」某个候选人。</li>
+    <li>必备维度缺失只给「待定」，不要用其它维度高分掩盖。</li>
+    <li>淘汰原因结构化（分析用），候选人沟通模板不写细节。</li>
+    <li>每周看：初筛分档 vs 现场面通过率；若倒挂，先修评分卡。</li>
+    <li>Agent 输出必须带 tool 结果摘要，禁止无调用就下录用结论。</li>
+  </ul>
+
+  <h2>6. Demo 路径（建议 3 分钟）</h2>
+  <ol>
+    <li>打开看板 → 点超时候选人 → 看证据高亮与 knockouts。</li>
+    <li>切「我的面试」→ 不写满 15 字提交 → 看报错；写完后解锁他人反馈。</li>
+    <li>「职位与评分卡」拖权重 → 右侧名次箭头变化。</li>
+    <li>「招聘分析」看面试官偏宽松/偏严与分档通过率。</li>
+  </ol>
+  <div class="note">盲筛开关打开后，全页隐藏姓名/性别/年龄/学校——演示反偏见设计。</div>
+
+  <div class="footer"><a href="../index.html">← 总览</a> · <a href="02-talent.html">下一板块：人才评估 →</a></div>
+</main>
+</body>
+</html>

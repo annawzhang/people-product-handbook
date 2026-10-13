@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>04 用户原声 · Handbook</title>
+<link rel="stylesheet" href="../styles.css"/>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><strong>04 用户原声</strong><span>VOC Kit + Voice Agent</span></div>
+  <nav class="nav">
+    <a href="../index.html">总览</a>
+    <a href="01-hiring.html">招聘</a>
+    <a href="02-talent.html">人才评估</a>
+    <a href="03-stats.html">人力量化</a>
+    <a class="on" href="04-voc.html">用户原声</a>
+    <a href="05-outreach.html">触达护栏</a>
+    <a href="06-hris.html">HRIS</a>
+    <a href="07-skills.html">Skills</a>
+  </nav>
+</header>
+<main class="wrap">
+  <div class="hero">
+    <h1>批处理洞察 + 对话原声 Agent</h1>
+    <p class="muted">Kit 负责跑批出「问题·结论·原声」与话术包；Agent 负责追问，但<strong>无引用原声不得回答</strong>。</p>
+    <a class="cta" href="https://annawzhang.github.io/voc-voice-agent/">Demo · Voice Agent</a>
+    <a class="cta ghost" href="https://annawzhang.github.io/voc-insight-kit/">Demo · Insight 报告</a>
+    <a class="cta ghost" href="https://annawzhang.github.io/voc-voice-agent/tests.html">Agent 6 项测试</a>
+  </div>
+
+  <h2>1. 架构图</h2>
+  <h3>VOC Insight Kit（批处理）</h3>
+  <div class="mermaid">
+flowchart LR
+  C[评论快照] --> D[去重合并点赞]
+  D --> T[议题编码 codebook]
+  T --> S[情感/否定词]
+  S --> W[点赞加权]
+  W --> P[价格关口]
+  W --> R[问题·结论·原声]
+  R --> ADV[定价/上市/传播]
+  R --> SCR[四步话术]
+  SCR --> QA[禁止话术检查]
+  </div>
+
+  <h3>VOC Voice Agent（对话）</h3>
+  <div class="mermaid">
+sequenceDiagram
+  participant U as 用户
+  participant A as VocAgent.answer
+  participant E as 检索/统计/话术/质检
+  participant Q as 原声语料
+  U->>A: 价格关口?
+  A->>E: detectIntent
+  E->>Q: priceCeiling / search
+  Q-->>E: quotes[]
+  alt 无引用
+    A-->>U: 拒绝臆造
+  else 有引用
+    E-->>A: blocks + citations
+    A-->>U: 结论 + 原声卡片
+  end
+  </div>
+
+  <h2>2. API / 引擎调用</h2>
+  <h3>Voice Agent（浏览器）</h3>
+  <table>
+    <thead><tr><th>调用</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><code>VocAgent.answer(text)</code></td><td>主入口；返回 text/blocks/citations 或 error</td></tr>
+      <tr><td><code>VocAgent.search(q, opts)</code></td><td>按议题/车型/立场检索，点赞排序</td></tr>
+      <tr><td><code>VocAgent.topicStats(topic)</code></td><td>按条/按点赞负面率 + Top 原声</td></tr>
+      <tr><td><code>VocAgent.priceCeiling()</code></td><td>价位点负面点赞占比首次≥50%</td></tr>
+      <tr><td><code>VocAgent.fourStep(topic)</code></td><td>认同→重构→转移→落地，绑定 cite</td></tr>
+      <tr><td><code>VocAgent.checkScript(text)</code></td><td>禁止规则命中列表</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Insight Kit（Python）</h3>
+  <table>
+    <thead><tr><th>模块</th><th>作用</th></tr></thead>
+    <tbody>
+      <tr><td><code>voc.analyze</code></td><td>去重、编码、情感、价格、人群</td></tr>
+      <tr><td><code>voc.scripts</code></td><td>四步话术生成</td></tr>
+      <tr><td><code>config/codebook.toml</code></td><td>议题关键词</td></tr>
+      <tr><td><code>config/scripts.toml</code></td><td>话术与禁止规则</td></tr>
+    </tbody>
+  </table>
+
+  <h3>产品化 HTTP 建议</h3>
+<pre>POST /v1/voc/query     { question } → { answer, citations[] }
+POST /v1/voc/scripts   { topic, model } → { steps[], cite }
+POST /v1/voc/moderate  { text } → { ok, hits[] }
+POST /v1/voc/batch     { comments[] } → report_id   # Kit 跑批</pre>
+
+  <h2>3. Follow-up</h2>
+  <table>
+    <thead><tr><th>追问</th><th>答法</th></tr></thead>
+    <tbody>
+      <tr><td>Agent 会不会幻觉？</td><td>引擎层：citations 为空直接 error；UI 必须渲染引用。</td></tr>
+      <tr><td>为什么要点赞加权？</td><td>防灌水；条数与加权两个口径一起看。</td></tr>
+      <tr><td>四步话术是否太死板？</td><td>模板保底；禁止规则挡住危险发挥。</td></tr>
+      <tr><td>和销售触达如何衔接？</td><td>话术过检后，才能进 Sales Ops 预览→授权→群发。</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. 技术栈梳理</h2>
+  <table>
+    <thead><tr><th></th><th>Insight Kit</th><th>Voice Agent</th></tr></thead>
+    <tbody>
+      <tr><td>运行时</td><td>Python 标准库</td><td>浏览器原生 JS</td></tr>
+      <tr><td>配置</td><td>TOML</td><td>data.js 语料</td></tr>
+      <tr><td>LLM</td><td>无</td><td>无（规则 Agent）</td></tr>
+      <tr><td>测试</td><td>脚本/报告</td><td>tests.html 6 项</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Best practices</h2>
+  <ul class="tight">
+    <li>结论句旁必须有原声 ID；报告评审检查「无引用段落」。</li>
+    <li>价格关口至少报告样本量；单条过半要标注「弱证据」。</li>
+    <li>禁止话术规则配置化，业务可增删，不写死在模型里。</li>
+    <li>Agent 意图优先级：质检 &gt; 话术 &gt; 价格关口 &gt; 议题检索。</li>
+  </ul>
+
+  <h2>6. Demo 路径</h2>
+  <ol>
+    <li>Agent：点「价格心理关口」→ 看引用卡片。</li>
+    <li>生成四步话术 → 再「检查：保证提车+竞品垃圾」→ 看拦截。</li>
+    <li>打开 Insight 报告对比议题结论口径。</li>
+  </ol>
+
+  <div class="footer"><a href="03-stats.html">← 人力量化</a> · <a href="05-outreach.html">下一板块：触达护栏 →</a></div>
+</main>
+</body>
+</html>

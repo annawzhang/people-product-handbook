@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>People Product Handbook · 人力产品开源手册</title>
+<link rel="stylesheet" href="styles.css"/>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><strong>People Product Handbook</strong><span>人力 / 人才产品开源手册</span></div>
+  <span class="badge">虚构数据 · 对齐公开仓库</span>
+  <nav class="nav">
+    <a class="on" href="index.html">总览</a>
+    <a href="sections/01-hiring.html">招聘</a>
+    <a href="sections/02-talent.html">人才评估</a>
+    <a href="sections/03-stats.html">人力量化</a>
+    <a href="sections/04-voc.html">用户原声</a>
+    <a href="sections/05-outreach.html">触达护栏</a>
+    <a href="sections/06-hris.html">HRIS</a>
+    <a href="sections/07-skills.html">Skills</a>
+  </nav>
+</header>
+<main class="wrap">
+  <div class="hero">
+    <h1>从线索与原声，到可解释模型、实验与 Agent</h1>
+    <p class="muted">按板块写清：架构图 · 引擎/API 调用 · Follow-up（面试追问）· 技术栈梳理 · Best practice · Demo。<br/>
+    全部公开复刻均为虚构数据；不涉及私有仓真实政策 / 薪酬 / 门店明细。</p>
+    <p>
+      <a class="cta" href="https://github.com/annawzhang/pm-hr-skills">Skills 仓</a>
+      <a class="cta ghost" href="https://annawzhang.github.io/portfolio/">作品集</a>
+    </p>
+  </div>
+
+  <h2>产品地图</h2>
+  <div class="mermaid">
+flowchart TB
+  subgraph ingest [输入]
+    R[简历 / 线索]
+    V[用户原声 / 社媒]
+    O[组织与流程事件]
+  end
+  subgraph decide [决策层]
+    T[人才八维评分]
+    H[结构化招聘评分卡]
+    S[人力量化统计]
+  end
+  subgraph act [执行层]
+    HA[招聘看板 / Agent]
+    VA[原声 Agent]
+    OA[触达审批流水线]
+    HR[HRIS 审批]
+  end
+  R --> T --> HA
+  R --> H --> HA
+  S -.-> T
+  S -.-> H
+  V --> VA
+  V --> OA
+  O --> HR
+  HA --> S
+  </div>
+
+  <h2>七个板块</h2>
+  <div class="grid">
+    <a class="card" href="sections/01-hiring.html" style="text-decoration:none;color:inherit">
+      <h3>01 结构化招聘 <span class="pill js">JS</span></h3>
+      <p>评分卡初筛、独立反馈、SLA、漏斗。Demo：Hiring Copilot；下一刀：Hiring Agent。</p>
+    </a>
+    <a class="card" href="sections/02-talent.html" style="text-decoration:none;color:inherit">
+      <h3>02 人才评估模型 <span class="pill py">Python</span></h3>
+      <p>八维可解释加权、S+/S/A/B/C、NOT EXISTS AB、索引调优。</p>
+    </a>
+    <a class="card" href="sections/03-stats.html" style="text-decoration:none;color:inherit">
+      <h3>03 人力量化统计 <span class="pill py">Python</span></h3>
+      <p>z 检验、样本量、Wilson CI、Kaplan–Meier、评分校准。</p>
+    </a>
+    <a class="card" href="sections/04-voc.html" style="text-decoration:none;color:inherit">
+      <h3>04 用户原声 <span class="pill py">Py</span> <span class="pill js">JS</span></h3>
+      <p>批处理 Kit + 对话 Agent：无原声不回答、四步话术、禁止话术。</p>
+    </a>
+    <a class="card" href="sections/05-outreach.html" style="text-decoration:none;color:inherit">
+      <h3>05 触达护栏 <span class="pill py">Python</span></h3>
+      <p>幂等锁、时间窗、健康检查、预览授权、message_id 留痕。</p>
+    </a>
+    <a class="card" href="sections/06-hris.html" style="text-decoration:none;color:inherit">
+      <h3>06 HRIS 流程 <span class="pill js">JS</span></h3>
+      <p>入转调离审批链、编制、OA 映射与重试。</p>
+    </a>
+    <a class="card" href="sections/07-skills.html" style="text-decoration:none;color:inherit">
+      <h3>07 Skills / SOP <span class="pill md">MD</span></h3>
+      <p>Cursor Agent Skill + Playbook，把方法交给 Agent 执行。</p>
+    </a>
+  </div>
+
+  <h2>统一设计原则</h2>
+  <table>
+    <thead><tr><th>原则</th><th>怎么落地</th></tr></thead>
+    <tbody>
+      <tr><td>可解释</td><td>分数能拆回维度 / 原声；禁止黑盒结论直接进生产</td></tr>
+      <tr><td>可实验</td><td>改策略必须能算样本量、跑 z 检验、看校准</td></tr>
+      <tr><td>可护栏</td><td>推进、群发、话术发布前有硬规则拦截</td></tr>
+      <tr><td>可追溯</td><td>反馈、message_id、audit 日志</td></tr>
+      <tr><td>可演示</td><td>零依赖或极少依赖；虚构数据；Pages + 自测</td></tr>
+    </tbody>
+  </table>
+
+  <div class="footer">Anna Zhang · 公开学习手册 · 与实习内部系统无对应关系</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>05 触达护栏 · Handbook</title>
+<link rel="stylesheet" href="../styles.css"/>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><strong>05 触达护栏</strong><span>Sales Ops Assistant</span></div>
+  <nav class="nav">
+    <a href="../index.html">总览</a>
+    <a href="01-hiring.html">招聘</a>
+    <a href="02-talent.html">人才评估</a>
+    <a href="03-stats.html">人力量化</a>
+    <a href="04-voc.html">用户原声</a>
+    <a class="on" href="05-outreach.html">触达护栏</a>
+    <a href="06-hris.html">HRIS</a>
+    <a href="07-skills.html">Skills</a>
+  </nav>
+</header>
+<main class="wrap">
+  <div class="hero">
+    <h1>业务群触达：确定性流水线</h1>
+    <p class="muted">AI 会写不是难点；难点是重复发送、脏数据、非工作时间、越权群发。用代码护栏回答「能不能发」。</p>
+    <a class="cta" href="https://annawzhang.github.io/sales-ops-assistant/">Demo · 场景回放</a>
+    <a class="cta ghost" href="https://github.com/annawzhang/sales-ops-assistant">GitHub</a>
+  </div>
+
+  <h2>1. 架构图</h2>
+  <div class="mermaid">
+flowchart LR
+  U[一句话 / 定时任务] --> R[意图路由]
+  R --> L{幂等锁 · 时间窗}
+  L -->|过| F[刷新数据 · 失败重跑]
+  F --> H{健康检查}
+  H -->|过| C[计算 + 渲染]
+  C --> P{预览确认}
+  P -->|确认| S[按白名单顺序发送]
+  S --> A[(audit.jsonl + message_id)]
+  L -->|拦| A
+  H -->|拦| A
+  </div>
+
+  <h2>2. API / 流水线步骤（逻辑接口）</h2>
+  <table>
+    <thead><tr><th>步骤</th><th>输入</th><th>失败行为</th></tr></thead>
+    <tbody>
+      <tr><td>意图路由</td><td>自然语言 / 任务 ID</td><td>越权「发全部」→ 拒绝</td></tr>
+      <tr><td>幂等锁</td><td>task + day + halfday</td><td>已执行 → 跳过</td></tr>
+      <tr><td>时间窗</td><td>当前时间</td><td>窗外 → 停止</td></tr>
+      <tr><td>数据刷新</td><td>数据源</td><td>超时重跑 1 次，仍失败不发</td></tr>
+      <tr><td>健康检查</td><td>覆盖率/新鲜度/数值</td><td>任一不过 → 拦截</td></tr>
+      <tr><td>预览授权</td><td>首跑或大批量</td><td>未确认 → 等待</td></tr>
+      <tr><td>发送</td><td>白名单群序</td><td>禁言/敏感群跳过</td></tr>
+      <tr><td>留痕</td><td>每步事件</td><td>写入 audit + message_id</td></tr>
+    </tbody>
+  </table>
+
+  <h3>产品化 HTTP 建议</h3>
+<pre>POST /v1/outreach/preview  { task_id }
+POST /v1/outreach/approve  { preview_id, actor }
+POST /v1/outreach/run      { task_id } → { status, message_ids[] }
+GET  /v1/outreach/audit    { message_id }</pre>
+
+  <h2>3. Follow-up</h2>
+  <table>
+    <thead><tr><th>追问</th><th>答法</th></tr></thead>
+    <tbody>
+      <tr><td>和飞书 SOP 产品化什么关系？</td><td>作品集里的预览→授权→群发，在此变成可测流水线。</td></tr>
+      <tr><td>为什么不先接真 IM？</td><td>先把护栏测绿；连接器可替换，规则不能漂。</td></tr>
+      <tr><td>错误发送如何追责？</td><td>message_id + audit 回溯谁批准、发到哪。</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. 技术栈梳理</h2>
+  <p><span class="pill py">Python 标准库</span> 场景回放 HTML · 无第三方 IM SDK（公开版模拟发送）</p>
+
+  <h2>5. Best practices</h2>
+  <ul class="tight">
+    <li>护栏配置与代码同审；只改文档不算上线。</li>
+    <li>健康检查阈值由业务签字（如达成率 &gt;100% 必拦）。</li>
+    <li>VOC 话术必须先过禁止检查，再进本流水线。</li>
+  </ul>
+
+  <h2>6. Demo 路径</h2>
+  <ol>
+    <li>打开场景回放，走一遍「重复触发被幂等拦住」。</li>
+    <li>演示窗外时间 / 健康检查失败不发。</li>
+    <li>展示 audit 中的 message_id。</li>
+  </ol>
+
+  <div class="footer"><a href="04-voc.html">← 用户原声</a> · <a href="06-hris.html">下一板块：HRIS →</a></div>
+</main>
+</body>
+</html>

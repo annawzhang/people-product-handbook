@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>03 人力量化 · Handbook</title>
+<link rel="stylesheet" href="../styles.css"/>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><strong>03 人力量化统计</strong><span>People Stats Kit</span></div>
+  <nav class="nav">
+    <a href="../index.html">总览</a>
+    <a href="01-hiring.html">招聘</a>
+    <a href="02-talent.html">人才评估</a>
+    <a class="on" href="03-stats.html">人力量化</a>
+    <a href="04-voc.html">用户原声</a>
+    <a href="05-outreach.html">触达护栏</a>
+    <a href="06-hris.html">HRIS</a>
+    <a href="07-skills.html">Skills</a>
+  </nav>
+</header>
+<main class="wrap">
+  <div class="hero">
+    <h1>统计学方法 → 人力决策工具箱</h1>
+    <p class="muted">开实验前算样本量；跑完看 z/p；漏斗给 Wilson CI；周期用 Kaplan–Meier；评分看校准与 Brier。</p>
+    <a class="cta" href="https://annawzhang.github.io/people-stats-kit/">Demo · 报告</a>
+    <a class="cta ghost" href="https://github.com/annawzhang/people-stats-kit">GitHub</a>
+  </div>
+
+  <h2>1. 架构图</h2>
+  <div class="mermaid">
+flowchart TB
+  SC[synth.build_scenarios] --> AB[proportion.two_proportion_z]
+  SC --> SS[sample_size_two_prop]
+  SC --> FN[funnel.funnel_rates + wilson_ci]
+  SC --> KM[survival.kaplan_meier]
+  SC --> CAL[calibration_bins + brier]
+  AB & SS & FN & KM & CAL --> REP[report.render]
+  REP --> HTML[docs/index.html]
+  </div>
+
+  <div class="mermaid">
+flowchart LR
+  subgraph before [开跑前]
+    B1[基线率 p1]
+    B2[目标率 p2]
+    B3[α / 功效]
+    B1 & B2 & B3 --> N[每组样本量 n]
+  end
+  subgraph after [跑完后]
+    A1[成功数 / n]
+    A2[z 与 p]
+    A3[lift]
+  end
+  N -.->|实验执行| A1
+  </div>
+
+  <h2>2. API 调用</h2>
+  <table>
+    <thead><tr><th>函数</th><th>场景</th><th>返回</th></tr></thead>
+    <tbody>
+      <tr><td><code>two_proportion_z(sa,na,sb,nb)</code></td><td>触达文案 / 分层跟进 AB</td><td>rate_a/b, diff, lift, z, p_value</td></tr>
+      <tr><td><code>sample_size_two_prop(p1,p2,α,power)</code></td><td>实验设计</td><td>n_per_group</td></tr>
+      <tr><td><code>funnel_rates([{name,n}…])</code></td><td>招聘漏斗</td><td>每步 rate + Wilson CI</td></tr>
+      <tr><td><code>wilson_ci(k,n)</code></td><td>单比例区间</td><td>(lo, hi)</td></tr>
+      <tr><td><code>kaplan_meier(times, events)</code></td><td>入职周期</td><td>生存曲线点</td></tr>
+      <tr><td><code>median_survival(curve)</code></td><td>一半人已入职的时间</td><td>天 or None</td></tr>
+      <tr><td><code>calibration_bins(scores, y)</code></td><td>初筛分 vs 通过</td><td>分档 mean_score / rate / gap</td></tr>
+      <tr><td><code>brier_score(scores, y)</code></td><td>概率预测质量</td><td>标量（越小越好）</td></tr>
+    </tbody>
+  </table>
+
+  <h3>与其它板块的调用关系</h3>
+<pre># 人才评估报告里的回复率检验 ≈ two_proportion_z
+# 招聘分析分档通过率 ≈ calibration_bins（分数归一化后）
+# Hiring Agent 开实验前可先调 sample_size_two_prop</pre>
+
+  <h2>3. Follow-up</h2>
+  <table>
+    <thead><tr><th>追问</th><th>答法</th></tr></thead>
+    <tbody>
+      <tr><td>p&lt;0.05 就一定要全量推广？</td><td>还要看 lift、功效、是否多重比较、业务成本。</td></tr>
+      <tr><td>为什么漏斗要用 Wilson 而不是正态近似？</td><td>小样本/极端比例时 Wilson 更稳。</td></tr>
+      <tr><td>删失是什么？</td><td>观察结束时尚未入职（仍在 Offer 等），不能当成失败。</td></tr>
+      <tr><td>和你统计学背景怎么挂钩？</td><td>本硕方法直接产品化：能算、能解释、能进 SOP。</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. 技术栈梳理</h2>
+  <table>
+    <thead><tr><th>项</th><th>选择</th></tr></thead>
+    <tbody>
+      <tr><td>依赖</td><td>仅 Python 标准库（math / random / unittest）</td></tr>
+      <tr><td>正态分位数</td><td>Acklam 有理逼近（norm_ppf）</td></tr>
+      <tr><td>交付</td><td>HTML 报告 + unittest</td></tr>
+      <tr><td>刻意不用</td><td>scipy / statsmodels（降低复现门槛）</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Best practices</h2>
+  <ul class="tight">
+    <li>先算 n 再开跑；样本不够时报告写「效力不足」而不是「没差异」。</li>
+    <li>漏斗同时看点估计与 CI，避免「掉了 2 个人」过度解读。</li>
+    <li>校准 gap 持续为负/正，说明分数系统性偏高/偏低。</li>
+    <li>与业务约定：显著 + 最小可感知提升（如回复率 +5pp）才推全。</li>
+  </ul>
+
+  <h2>6. Demo 路径</h2>
+  <ol>
+    <li>打开报告 KPI：AB 结论、lift、每组样本量、中位周期。</li>
+    <li>漏斗表指一格 CI，解释为何不能只看转化率数字。</li>
+    <li>校准表：≥60 分档通过率应高于 0–39。</li>
+    <li><code>python3 -m unittest discover -s tests -v</code>（9 passed）。</li>
+  </ol>
+
+  <div class="footer"><a href="02-talent.html">← 人才评估</a> · <a href="04-voc.html">下一板块：用户原声 →</a></div>
+</main>
+</body>
+</html>

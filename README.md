@@ -17,6 +17,8 @@
 | 05 | [触达护栏](sections/05-outreach.html) | [sales-ops-assistant](https://annawzhang.github.io/sales-ops-assistant/) |
 | 06 | [HRIS](sections/06-hris.html) | [hris-prototype](https://annawzhang.github.io/hris-prototype/?demo) |
 | 07 | [Skills / SOP](sections/07-skills.html) | [pm-hr-skills](https://github.com/annawzhang/pm-hr-skills) |
+| 08 | [如何使用我的 GitHub](sections/08-github-guide.html) | 面试官路线 / 置顶 / 带逛话术 |
+| — | 招聘 Agent | [hiring-agent](https://annawzhang.github.io/hiring-agent/) |
 
 ## 本地预览
 

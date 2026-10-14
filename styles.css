@@ -1,6 +1,25 @@
 :root {
   --text: #0f172a; --muted: #64748b; --border: #e2e8f0; --accent: #0f766e;
   --accent-soft: #f0fdfa; --bg: #f8fafc; --warn: #b45309; --card: #fff;
+  --hero-from: #f0fdfa; --hero-to: #fff; --ghost-border: #99f6e4;
+}
+/* 分册主题：降低「每页同一套青绿卡片」的重复感 */
+body.theme-agent {
+  --accent: #1e3a5f; --accent-soft: #eef2ff; --bg: #f4f6fb;
+  --hero-from: #1e3a5f; --hero-to: #314e79; --ghost-border: #c7d2fe;
+  --text: #0f172a;
+}
+body.theme-voc {
+  --accent: #9f1239; --accent-soft: #fff1f2; --bg: #faf7f5;
+  --hero-from: #fff1f2; --hero-to: #fff; --ghost-border: #fecdd3;
+}
+body.theme-biz {
+  --accent: #854d0e; --accent-soft: #fefce8; --bg: #fafaf7;
+  --hero-from: #fef9c3; --hero-to: #fff; --ghost-border: #fde68a;
+}
+body.theme-stats {
+  --accent: #0369a1; --accent-soft: #e0f2fe; --bg: #f8fafc;
+  --hero-from: #e0f2fe; --hero-to: #fff; --ghost-border: #7dd3fc;
 }
 * { box-sizing: border-box; }
 body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -18,15 +37,19 @@ h1 { font-size: 1.7rem; margin: 8px 0 6px; }
 h2 { font-size: 1.15rem; margin: 32px 0 10px; padding-left: 10px; border-left: 4px solid var(--accent); }
 h3 { font-size: 0.98rem; margin: 18px 0 8px; }
 .muted { color: var(--muted); font-size: 0.88rem; }
-.hero { background: linear-gradient(135deg, #f0fdfa, #fff 55%); border: 1px solid var(--border);
+.hero { background: linear-gradient(135deg, var(--hero-from), var(--hero-to) 55%); border: 1px solid var(--border);
   border-radius: 16px; padding: 22px 22px 18px; margin-bottom: 18px; }
+body.theme-agent .hero { color: #f8fafc; border: none; }
+body.theme-agent .hero .muted { color: #cbd5e1; }
+body.theme-agent .hero a.cta { background: #f8fafc; color: #1e3a5f !important; }
+body.theme-agent .hero a.cta.ghost { background: transparent; color: #e2e8f0 !important; border-color: #94a3b8; }
 .grid { display: grid; gap: 12px; grid-template-columns: repeat(2, 1fr); }
 @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
 .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; padding: 14px 16px; }
 .card h3 { margin: 0 0 6px; } .card p { margin: 0; color: var(--muted); font-size: 0.86rem; }
 .cta { display: inline-block; margin: 4px 6px 4px 0; padding: 8px 14px; border-radius: 10px;
   background: var(--accent); color: #fff !important; text-decoration: none; font-size: 0.86rem; font-weight: 600; }
-.cta.ghost { background: #fff; color: var(--accent) !important; border: 1px solid #99f6e4; }
+.cta.ghost { background: #fff; color: var(--accent) !important; border: 1px solid var(--ghost-border); }
 table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid var(--border);
   border-radius: 12px; overflow: hidden; font-size: 0.86rem; }
 th, td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; }
@@ -39,9 +62,39 @@ pre { background: #0f172a; color: #e2e8f0; padding: 14px 16px; border-radius: 12
 .pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 0.72rem; font-weight: 600; }
 .pill.js { background: #ecfeff; color: #0e7490; } .pill.py { background: #f0fdf4; color: #166534; }
 .pill.md { background: #f8fafc; color: #475569; border: 1px solid var(--border); }
-.note { background: var(--accent-soft); border: 1px solid #99f6e4; border-radius: 10px; padding: 12px 14px;
+.note { background: var(--accent-soft); border: 1px solid var(--ghost-border); border-radius: 10px; padding: 12px 14px;
   font-size: 0.88rem; margin: 12px 0; }
 .warn { background: #fff7ed; border: 1px solid #fed7aa; border-radius: 10px; padding: 12px 14px;
   font-size: 0.88rem; margin: 12px 0; color: #9a3412; }
 ul.tight li { margin: 4px 0; }
 .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.8rem; }
+
+/* 能力层色带（§10 主视觉，替代连环 Mermaid） */
+.layer-stack { display: flex; flex-direction: column; gap: 6px; margin: 14px 0 20px; }
+.layer-row { display: grid; grid-template-columns: 88px 1fr; gap: 0; border-radius: 10px; overflow: hidden;
+  border: 1px solid var(--border); background: #fff; min-height: 64px; }
+.layer-tag { display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.78rem;
+  color: #fff; letter-spacing: 0.02em; }
+.layer-body { padding: 10px 14px; font-size: 0.86rem; }
+.layer-body strong { display: block; margin-bottom: 2px; }
+.layer-body span { color: var(--muted); font-size: 0.8rem; }
+.layer-row.l0 .layer-tag { background: #334155; }
+.layer-row.l1 .layer-tag { background: #1e3a5f; }
+.layer-row.l2 .layer-tag { background: #4338ca; }
+.layer-row.l3 .layer-tag { background: #0f766e; }
+.layer-row.l4 .layer-tag { background: #b45309; }
+
+/* 双栏对照（§04 / §10），避免再堆一张 flowchart */
+.compare { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0 18px; }
+@media (max-width: 800px) { .compare { grid-template-columns: 1fr; } }
+.compare .pane { border-radius: 14px; padding: 16px; border: 1px solid var(--border); }
+.compare .pane h3 { margin: 0 0 10px; font-size: 0.95rem; }
+.compare .pane.tx { background: #0f172a; color: #e2e8f0; border: none; }
+.compare .pane.tx h3 { color: #f8fafc; }
+.compare .pane.tx li { color: #cbd5e1; }
+.compare .pane.lx { background: #fff; border-left: 4px solid #9f1239; }
+.compare ul { margin: 0; padding-left: 18px; font-size: 0.84rem; line-height: 1.7; }
+
+/* VOC 引用条 */
+.quote-strip { font-family: "Songti SC", "Noto Serif SC", Georgia, serif; font-size: 1.05rem;
+  border-left: 3px solid var(--accent); padding: 8px 0 8px 14px; margin: 12px 0; color: #334155; }

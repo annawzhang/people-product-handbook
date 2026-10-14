@@ -10,169 +10,93 @@
   mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
 </script>
 </head>
-<body>
+<body class="theme-voc">
 <header class="top">
   <div class="brand"><strong>04 用户原声</strong><span>VOC Kit + Voice Agent</span></div>
   <nav class="nav">
     <a href="../index.html">总览</a>
     <a href="01-hiring.html">招聘</a>
-    <a href="02-talent.html">人才评估</a>
     <a href="03-stats.html">人力量化</a>
     <a class="on" href="04-voc.html">用户原声</a>
     <a href="05-outreach.html">触达护栏</a>
-    <a href="06-hris.html">HRIS</a>
-    <a href="07-skills.html">Skills</a>
     <a href="10-agent-capability.html">Agent 能力层</a>
   </nav>
 </header>
 <main class="wrap">
   <div class="hero">
-    <h1>批处理洞察 + 对话原声 Agent</h1>
-    <p class="muted">按 <a href="10-agent-capability.html">98008 能力层</a> 并行设计：入口 / 主调度 / Skill / 原声证据 / 治理（Kit+规则）。<br/>
-    Kit 跑批出「问题·结论·原声」；Agent 追问时<strong>无引用原声不得回答</strong>。</p>
+    <h1>原声进决策，话术过质检</h1>
+    <p class="quote-strip">「无引用原声，不得回答。」—— VOC Agent 的硬约束，对齐 98008 可溯源回答。</p>
+    <p class="muted">Kit 跑批出问题·结论·原声；Agent 对话追问。能力层对照见 <a href="10-agent-capability.html">§10</a>。</p>
     <a class="cta" href="https://annawzhang.github.io/voc-voice-agent/">Demo · Voice Agent</a>
-    <a class="cta ghost" href="https://annawzhang.github.io/voc-insight-kit/">Demo · Insight 报告</a>
-    <a class="cta ghost" href="https://annawzhang.github.io/voc-voice-agent/tests.html">Agent 6 项测试</a>
-    <a class="cta ghost" href="10-agent-capability.html">能力层对照</a>
+    <a class="cta ghost" href="https://annawzhang.github.io/voc-insight-kit/">Insight 报告</a>
+    <a class="cta ghost" href="https://annawzhang.github.io/voc-voice-agent/tests.html">6 项测试</a>
   </div>
 
-  <h2>1. 架构图 · 与 98008 并行</h2>
-  <h3>能力层对照（理想 VOC ↔ 腾讯 98008）</h3>
-  <div class="mermaid">
-flowchart LR
-  subgraph tx [腾讯 98008]
-    T0[98008 入口]
-    T1[Knot 主调度]
-    T2[Skill / 12 子 Agent]
-    T3[书架 FAQ]
-    T4[Console + Gap]
-  end
-  subgraph lx [理想 VOC]
-    L0[Voice Agent 入口]
-    L1[detectIntent]
-    L2[search / 关口 / 话术 / 质检]
-    L3[原声语料]
-    L4[Insight Kit + 禁止规则]
-  end
-  T0 -.-> L0
-  T1 -.-> L1
-  T2 -.-> L2
-  T3 -.-> L3
-  T4 -.-> L4
+  <h2>1. 治理 vs 执行（两栏，不连环图）</h2>
+  <div class="compare">
+    <div class="pane lx" style="border-left-color:#9f1239">
+      <h3>L4 治理 · Insight Kit</h3>
+      <ul>
+        <li>评论去重 · 合并点赞</li>
+        <li>议题 codebook · 情感</li>
+        <li>价格关口 · 话术包</li>
+        <li>禁止规则配置（≈ 风控词库）</li>
+      </ul>
+    </div>
+    <div class="pane" style="background:#1c1917;color:#fafaf9;border:none">
+      <h3 style="color:#fff">L0–L3 执行 · Voice Agent</h3>
+      <ul style="color:#d6d3d1">
+        <li>detectIntent 主调度</li>
+        <li>Skill：search / 关口 / 四步 / 质检</li>
+        <li>证据：原声 citations</li>
+        <li>无 cite → 拒答</li>
+      </ul>
+    </div>
   </div>
 
-  <h3>VOC 执行与治理解耦</h3>
-  <div class="mermaid">
-flowchart TB
-  subgraph L4 [治理层 · Insight Kit]
-    C[评论快照] --> D[去重合并点赞]
-    D --> T[议题 codebook]
-    T --> S[情感 / 否定]
-    S --> W[点赞加权]
-    W --> P[价格关口]
-    W --> R[问题·结论·原声]
-    R --> SCR[四步话术包]
-    SCR --> QA[禁止话术配置]
-  end
-  subgraph L013 [执行层 · Voice Agent]
-    UI[对话入口] --> ORCH[answer / detectIntent]
-    ORCH --> SK[Skill 白名单]
-    SK --> Q[(原声语料 L3)]
-    ORCH -->|无 cite| X[拒答]
-    SK -->|质检未过| X
-  end
-  R --> Q
-  QA --> SK
-  </div>
-
-  <h3>对话时序</h3>
+  <h2>2. 对话时序</h2>
   <div class="mermaid">
 sequenceDiagram
   participant U as 用户
-  participant A as VocAgent L1
-  participant E as Skill L2
-  participant Q as 原声 L3
+  participant A as VocAgent
+  participant Q as 原声语料
   U->>A: 价格关口?
-  A->>E: detectIntent → priceCeiling
-  E->>Q: 价位点 × 点赞
-  Q-->>E: quotes[]
+  A->>Q: priceCeiling
   alt 无引用
-    A-->>U: 拒绝臆造
+    A-->>U: 拒答
   else 有引用
-    E-->>A: blocks + citations
     A-->>U: 结论 + 原声卡片
   end
   </div>
 
-  <h2>2. API / Skill 白名单（L2）</h2>
+  <h2>3. Skill 白名单</h2>
   <table>
-    <thead><tr><th>调用</th><th>能力层角色</th><th>说明</th></tr></thead>
+    <thead><tr><th>调用</th><th>说明</th></tr></thead>
     <tbody>
-      <tr><td><code>VocAgent.answer(text)</code></td><td>L1 主入口</td><td>返回 text/blocks/citations 或 error</td></tr>
-      <tr><td><code>VocAgent.search(q, opts)</code></td><td>L2 ≈ RAG</td><td>议题/车型/立场检索，点赞排序</td></tr>
-      <tr><td><code>VocAgent.topicStats(topic)</code></td><td>L2 业务工具</td><td>按条/按点赞负面率 + Top 原声</td></tr>
-      <tr><td><code>VocAgent.priceCeiling()</code></td><td>L2 业务工具</td><td>价位点负面点赞占比首次≥50%</td></tr>
-      <tr><td><code>VocAgent.fourStep(topic)</code></td><td>L2 业务工具</td><td>认同→重构→转移→落地，绑定 cite</td></tr>
-      <tr><td><code>VocAgent.checkScript(text)</code></td><td>L2 ≈ 风控 Skill</td><td>禁止规则命中列表</td></tr>
+      <tr><td><code>VocAgent.answer</code></td><td>L1 主入口</td></tr>
+      <tr><td><code>search / topicStats / priceCeiling</code></td><td>L2 检索与议题</td></tr>
+      <tr><td><code>fourStep / checkScript</code></td><td>L2 话术与风控</td></tr>
     </tbody>
   </table>
 
-  <h3>Insight Kit（L4 治理）</h3>
-  <table>
-    <thead><tr><th>模块</th><th>作用</th></tr></thead>
-    <tbody>
-      <tr><td><code>voc.analyze</code></td><td>去重、编码、情感、价格、人群</td></tr>
-      <tr><td><code>voc.scripts</code></td><td>四步话术生成</td></tr>
-      <tr><td><code>config/codebook.toml</code></td><td>议题关键词（≈ 书架目录）</td></tr>
-      <tr><td><code>config/scripts.toml</code></td><td>话术与禁止规则（≈ 风控词库）</td></tr>
-    </tbody>
-  </table>
-
-  <h3>产品化 HTTP 建议</h3>
-<pre>POST /v1/voc/query     { question } → { answer, citations[] }
-POST /v1/voc/scripts   { topic, model } → { steps[], cite }
-POST /v1/voc/moderate  { text } → { ok, hits[] }
-POST /v1/voc/batch     { comments[] } → report_id   # Kit 跑批 ≈ Gap 补库侧</pre>
-
-  <h2>3. Follow-up</h2>
+  <h2>4. Follow-up</h2>
   <table>
     <thead><tr><th>追问</th><th>答法</th></tr></thead>
     <tbody>
-      <tr><td>和 98008 怎么类比？</td><td>入口/主调度/Skill/证据/治理五层同构；证据从 FAQ 换成原声；风控从敏感词换成禁止话术+无 cite 拒答。</td></tr>
-      <tr><td>Agent 会不会幻觉？</td><td>L2/L3：citations 为空直接 error；UI 必须渲染引用。</td></tr>
-      <tr><td>为什么要点赞加权？</td><td>防灌水；条数与加权两个口径一起看。</td></tr>
-      <tr><td>和销售触达如何衔接？</td><td>话术过检后，才能进 Sales Ops 预览→授权→群发。</td></tr>
+      <tr><td>和 98008？</td><td>五层同构；证据从 FAQ 换成原声；风控换成禁止话术 + 无 cite 拒答。</td></tr>
+      <tr><td>幻觉？</td><td>citations 为空直接 error；UI 必渲染引用。</td></tr>
+      <tr><td>接销售触达？</td><td>过检后才进 Sales Ops 预览→授权→群发。</td></tr>
     </tbody>
   </table>
 
-  <h2>4. 技术栈梳理</h2>
-  <table>
-    <thead><tr><th></th><th>Insight Kit L4</th><th>Voice Agent L0–L3</th></tr></thead>
-    <tbody>
-      <tr><td>运行时</td><td>Python 标准库</td><td>浏览器原生 JS</td></tr>
-      <tr><td>配置</td><td>TOML</td><td>data.js 语料</td></tr>
-      <tr><td>LLM</td><td>无</td><td>无（规则 Agent；能力层可挂模型）</td></tr>
-      <tr><td>测试</td><td>脚本/报告</td><td>tests.html 6 项</td></tr>
-    </tbody>
-  </table>
-
-  <h2>5. Best practices</h2>
-  <ul class="tight">
-    <li>结论句旁必须有原声 ID；对齐 98008「可溯源回答」。</li>
-    <li>意图优先级：质检 &gt; 话术 &gt; 价格关口 &gt; 议题检索（主调度纪律）。</li>
-    <li>禁止话术配置化，类似风控词库热更新，不写死在模型里。</li>
-    <li>Kit 批处理 = 治理侧「补库」；Agent 只读证据，不在对话里偷改口径。</li>
-  </ul>
-
-  <h2>6. Demo 路径</h2>
+  <h2>5. Demo</h2>
   <ol>
-    <li>先指 <a href="10-agent-capability.html">能力层页</a> L0–L4。</li>
-    <li>Agent：价格关口 → 原声卡片。</li>
-    <li>四步话术 →「检查：保证提车+竞品垃圾」→ 拦截。</li>
-    <li>Insight 报告对比议题结论口径。</li>
+    <li>价格关口 → 看原声卡片</li>
+    <li>四步话术 → 检查「保证提车+竞品垃圾」→ 拦截</li>
+    <li>对照 Insight 报告口径</li>
   </ol>
 
-  <div class="footer"><a href="03-stats.html">← 人力量化</a> · <a href="10-agent-capability.html">Agent 能力层 →</a> · <a href="05-outreach.html">触达护栏 →</a></div>
+  <div class="footer"><a href="10-agent-capability.html">← 能力层</a> · <a href="05-outreach.html">触达护栏 →</a></div>
 </main>
 </body>
 </html>

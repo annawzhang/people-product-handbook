@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>11 VOC Agent · Handbook</title>
+<link rel="stylesheet" href="../styles.css"/>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+</head>
+<body class="theme-voc">
+<header class="top">
+  <div class="brand"><strong>11 VOC Agent</strong><span>理想 · 用户原声智能体全栈</span></div>
+  <nav class="nav">
+    <a href="../index.html">总览</a>
+    <a href="10-agent-capability.html">98008 Agent</a>
+    <a class="on" href="11-voc-agent.html">VOC Agent</a>
+    <a href="04-voc.html">用户原声 Kit</a>
+    <a href="05-outreach.html">触达护栏</a>
+  </nav>
+</header>
+<main class="wrap">
+  <div class="hero">
+    <h1>VOC Voice Agent · 用户原声智能体</h1>
+    <p class="quote-strip">「无引用原声，不得回答。」</p>
+    <p class="muted">理想汽车舆情方法的公开 Agent 全栈：对话入口 · 意图调度 · Skill 白名单 · 原声证据 · Kit 治理。<br/>
+    与腾讯 98008 <strong>不是同一产品</strong>，全栈独立写在本页；98008 见 ←</p>
+    <a class="cta" href="https://annawzhang.github.io/voc-voice-agent/">Demo · Voice Agent</a>
+    <a class="cta ghost" href="https://annawzhang.github.io/voc-insight-kit/">Insight Kit 报告</a>
+    <a class="cta ghost" href="https://annawzhang.github.io/voc-voice-agent/tests.html">6 项测试</a>
+    <a class="cta ghost" href="10-agent-capability.html">另一套：98008 →</a>
+  </div>
+
+  <h2>1. 能力层（VOC 专属）</h2>
+  <div class="layer-stack">
+    <div class="layer-row l0"><div class="layer-tag">L0</div><div class="layer-body"><strong>入口 · 对话页</strong><span>销售/策略侧提问；快捷芯片：价格关口 / 议题 / 话术 / 质检</span></div></div>
+    <div class="layer-row l1"><div class="layer-tag">L1</div><div class="layer-body"><strong>主调度 · VocAgent.answer</strong><span>detectIntent：质检 &gt; 话术 &gt; 价格关口 &gt; 议题检索</span></div></div>
+    <div class="layer-row l2"><div class="layer-tag">L2</div><div class="layer-body"><strong>Skill 白名单</strong><span>search · topicStats · priceCeiling · fourStep · checkScript</span></div></div>
+    <div class="layer-row l3"><div class="layer-tag">L3</div><div class="layer-body"><strong>原声证据</strong><span>议题语料 · 点赞加权 · citations 必填 · 无 cite 拒答</span></div></div>
+    <div class="layer-row l4"><div class="layer-tag">L4</div><div class="layer-body"><strong>治理 · Insight Kit</strong><span>跑批更新语料 · codebook / 禁止规则 · tests.html</span></div></div>
+  </div>
+  <div class="note">公开复刻为规则引擎（无托管 LLM）；产品化挂模型时 Skill 边界不变。</div>
+
+  <h2>2. 全栈架构图</h2>
+  <div class="mermaid">
+flowchart TB
+  subgraph L4 [治理层 · VOC Insight Kit]
+    C[评论快照] --> D[去重合并点赞]
+    D --> CB[议题 codebook]
+    CB --> SENT[情感 / 否定]
+    SENT --> W[点赞加权]
+    W --> REP[问题·结论·原声报告]
+    REP --> SCR[四步话术包]
+    SCR --> FORB[禁止话术规则]
+  end
+  subgraph exec [执行层 · Voice Agent]
+    UI[L0 对话入口] --> ORCH[L1 detectIntent]
+    ORCH --> SK[L2 Skill 白名单]
+    SK --> Q[(L3 原声语料)]
+    ORCH -->|无 cite| X[拒答]
+    SK -->|质检未过| X
+  end
+  REP --> Q
+  FORB --> SK
+  </div>
+
+  <h2>3. 对话时序</h2>
+  <div class="mermaid">
+sequenceDiagram
+  participant U as 销售/策略
+  participant A as VocAgent L1
+  participant S as Skill L2
+  participant Q as 原声 L3
+  U->>A: 价格关口?
+  A->>A: detectIntent
+  A->>S: priceCeiling
+  S->>Q: 价位点 × 点赞加权
+  alt 无原声
+    A-->>U: error 拒答
+  else 有原声
+    S-->>A: blocks + citations
+    A-->>U: 结论 + 原声卡片
+  end
+  </div>
+
+  <h2>4. Skill / API</h2>
+  <table>
+    <thead><tr><th>调用</th><th>层</th><th>说明</th></tr></thead>
+    <tbody>
+      <tr><td><code>VocAgent.answer(text)</code></td><td>L1</td><td>主入口；返回 blocks/citations 或 error</td></tr>
+      <tr><td><code>search / topicStats</code></td><td>L2</td><td>议题检索与负面率</td></tr>
+      <tr><td><code>priceCeiling()</code></td><td>L2</td><td>负面点赞占比首次 ≥50% 的价位</td></tr>
+      <tr><td><code>fourStep(topic)</code></td><td>L2</td><td>认同→重构→转移→落地 + cite</td></tr>
+      <tr><td><code>checkScript(text)</code></td><td>L2</td><td>禁止话术命中列表</td></tr>
+    </tbody>
+  </table>
+
+  <h3>产品化 HTTP 建议</h3>
+<pre>POST /v1/voc/query     { question } → { answer, citations[] }
+POST /v1/voc/scripts   { topic, model } → { steps[], cite }
+POST /v1/voc/moderate  { text } → { ok, hits[] }
+POST /v1/voc/batch     { comments[] } → report_id</pre>
+
+  <h2>5. 与 Kit 的分工</h2>
+  <table>
+    <thead><tr><th></th><th>Insight Kit L4</th><th>Voice Agent L0–L3</th></tr></thead>
+    <tbody>
+      <tr><td>形态</td><td>跑批 → HTML 报告</td><td>对话追问</td></tr>
+      <tr><td>输出</td><td>议题结论 + 话术包</td><td>带引用回答 + 即时质检</td></tr>
+      <tr><td>硬约束</td><td>编码本 / 禁止规则</td><td>无原声引用则拒答</td></tr>
+    </tbody>
+  </table>
+
+  <h2>6. Follow-up</h2>
+  <table>
+    <thead><tr><th>追问</th><th>答法</th></tr></thead>
+    <tbody>
+      <tr><td>和 98008 什么关系？</td><td>两套独立全栈；方法上可对照「入口/调度/Skill/证据/治理」，产品与代码不共用。</td></tr>
+      <tr><td>幻觉？</td><td>citations 为空直接 error；UI 必渲染原声。</td></tr>
+      <tr><td>接销售触达？</td><td>话术过检后，才进 Sales Ops 预览→授权→群发。</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7. Demo 路径</h2>
+  <ol>
+    <li>打开 Voice Agent：价格关口 → 原声卡片</li>
+    <li>生成四步话术 →「检查：保证提车+竞品垃圾」→ 拦截</li>
+    <li>对照 Insight 报告议题口径</li>
+  </ol>
+
+  <div class="footer"><a href="10-agent-capability.html">← 98008 独立页</a> · <a href="04-voc.html">Kit 批处理页 →</a> · <a href="https://annawzhang.github.io/voc-voice-agent/">在线 Demo</a></div>
+</main>
+</body>
+</html>

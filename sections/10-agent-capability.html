@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>10 Agent 能力层 · Handbook</title>
+<title>10 Chatbot 98008 · Handbook</title>
 <link rel="stylesheet" href="../styles.css"/>
 <script type="module">
   import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
@@ -12,98 +12,102 @@
 </head>
 <body class="theme-agent">
 <header class="top">
-  <div class="brand"><strong>10 Agent 能力层</strong><span>98008 范式 → VOC / Hiring</span></div>
+  <div class="brand"><strong>10 Chatbot 98008</strong><span>腾讯 · 企业智能体全栈</span></div>
   <nav class="nav">
     <a href="../index.html">总览</a>
+    <a class="on" href="10-agent-capability.html">98008 Agent</a>
+    <a href="11-voc-agent.html">VOC Agent</a>
     <a href="01-hiring.html">招聘</a>
-    <a href="04-voc.html">用户原声</a>
-    <a href="09-bizcase.html">商赛</a>
-    <a class="on" href="10-agent-capability.html">Agent 能力层</a>
+    <a href="04-voc.html">用户原声 Kit</a>
   </nav>
 </header>
 <main class="wrap">
   <div class="hero">
-    <h1>同一套能力层，两套业务 Agent</h1>
-    <p class="muted">98008 = 员工前端产品名 · Knot = 执行基座 · Console = 运营治理。<br/>
-    理想 VOC / 招聘 Agent 按同一 L0–L4 并行设计；公开复刻为规则引擎。</p>
-    <a class="cta" href="https://annawzhang.github.io/voc-voice-agent/">VOC Agent</a>
-    <a class="cta ghost" href="https://annawzhang.github.io/hiring-agent/">Hiring Agent</a>
-    <a class="cta ghost" href="https://annawzhang.github.io/enterprise-ai-console/">Console</a>
+    <h1>Chatbot 98008 · 企业员工智能体</h1>
+    <p class="muted"><strong>98008</strong> = 员工侧聊天入口产品名 · <strong>Knot</strong> = 执行基座主智能体 · <strong>Console</strong> = 运营治理台。<br/>
+    本页只写这一套全栈；理想 VOC Agent 见独立页 →</p>
+    <a class="cta" href="https://annawzhang.github.io/enterprise-ai-console/">Demo · Console</a>
+    <a class="cta ghost" href="https://annawzhang.github.io/kb-gap-finder/">Gap Finder</a>
+    <a class="cta ghost" href="11-voc-agent.html">另一套：VOC Agent →</a>
   </div>
 
-  <h2>1. 能力层（主视觉）</h2>
+  <h2>1. 能力层（98008 专属）</h2>
   <div class="layer-stack">
-    <div class="layer-row l0"><div class="layer-tag">L0</div><div class="layer-body"><strong>入口层 · 产品名</strong><span>对话入口 / 工作台入口 — 用户感知的「Bot」</span></div></div>
-    <div class="layer-row l1"><div class="layer-tag">L1</div><div class="layer-body"><strong>主调度 · Orchestrator</strong><span>意图识别 · 路由 · 会话 — Knot / VocAgent.answer</span></div></div>
-    <div class="layer-row l2"><div class="layer-tag">L2</div><div class="layer-body"><strong>Skill / 子 Agent</strong><span>检索 · 业务工具 · 风控质检 · 转人工 — 白名单调用</span></div></div>
-    <div class="layer-row l3"><div class="layer-tag">L3</div><div class="layer-body"><strong>知识与证据</strong><span>书架 FAQ / 原声语料 / 评分卡引擎 — 无证据不下结论</span></div></div>
-    <div class="layer-row l4"><div class="layer-tag">L4</div><div class="layer-body"><strong>治理层 · Console</strong><span>监控 · 配置 · Gap 补库 · 审计 — 与执行解耦</span></div></div>
+    <div class="layer-row l0"><div class="layer-tag">L0</div><div class="layer-body"><strong>入口 · Chatbot 98008</strong><span>员工前端产品名；知识门户引流 · 八大业务菜单</span></div></div>
+    <div class="layer-row l1"><div class="layer-tag">L1</div><div class="layer-body"><strong>主调度 · Knot</strong><span>意图分流 · 会话管理 · 全局 RAG 入口 · 7×24 对话</span></div></div>
+    <div class="layer-row l2"><div class="layer-tag">L2</div><div class="layer-body"><strong>Skill + 12 业务子 Agent</strong><span>RAG · 敏感词风控 · IOA VIP · OEC 工单；薪酬/福利/税务等各绑书架</span></div></div>
+    <div class="layer-row l3"><div class="layer-tag">L3</div><div class="layer-body"><strong>知识图书馆</strong><span>21 权限化书架 · 135 文献 · 向量库 · 可溯源回答</span></div></div>
+    <div class="layer-row l4"><div class="layer-tag">L4</div><div class="layer-body"><strong>治理 · Console</strong><span>P3 运营看板 · Gap Finder · P0–P3 风控面板 · FAQ 补库热同步</span></div></div>
   </div>
-  <div class="note">面试一句话：入口产品 ≠ 执行基座；回答必须落到 L3；L2 可拦；L4 把缺口补回去。</div>
+  <div class="note">面试要点：入口产品 ≠ 执行基座；执行与治理解耦，独立迭代。</div>
 
-  <h2>2. 98008 ↔ VOC 对照（少画流程图）</h2>
+  <h2>2. 全栈架构图</h2>
+  <div class="mermaid">
+flowchart TB
+  U[员工] --> B[L0 98008 入口]
+  B --> KNOT[L1 Knot 主智能体]
+  KNOT --> RAG[RAG Skill]
+  KNOT --> RISK[风控 Skill P0-P3]
+  KNOT --> VIP[VIP / IOA Skill]
+  KNOT --> TICKET[OEC 工单 Skill]
+  KNOT --> SUB[12 业务子 Agent]
+  SUB --> LIB[L3 知识图书馆]
+  RAG --> LIB
+  RISK --> SCAN[输入/输出双向扫描]
+  KNOT --> LOG[问询埋点]
+  LOG --> GAP[Gap Finder]
+  GAP --> CON[L4 Console 补 FAQ]
+  CON --> LIB
+  CON --> ALERT[Exception 告警面板]
+  </div>
+
+  <h2>3. 执行层 vs 治理层</h2>
   <div class="compare">
     <div class="pane tx">
-      <h3>腾讯 · Chatbot 98008</h3>
+      <h3>执行层 · Knot</h3>
       <ul>
-        <li>L0 98008 员工前端</li>
-        <li>L1 Knot 主智能体分流</li>
-        <li>L2 RAG / 风控 / VIP / 工单 + 12 子 Agent</li>
-        <li>L3 21 书架 · 135 文献</li>
-        <li>L4 Console + Gap Finder → 未命中 6%</li>
+        <li>员工侧实时交互</li>
+        <li>K8s 云原生 · 不走公网</li>
+        <li>Skill 热重载</li>
+        <li>Helpful 反馈 · 转人工</li>
       </ul>
     </div>
-    <div class="pane lx">
-      <h3>理想 · VOC Voice Agent</h3>
+    <div class="pane" style="background:#fff;border-left:4px solid #1e3a5f">
+      <h3>治理层 · Console</h3>
       <ul>
-        <li>L0 对话页</li>
-        <li>L1 detectIntent 主调度</li>
-        <li>L2 search / 关口 / 话术 / 质检</li>
-        <li>L3 原声语料 · 点赞加权 · 无 cite 拒答</li>
-        <li>L4 Insight Kit + 禁止规则 + tests</li>
+        <li>P0 KPI / 异常监控</li>
+        <li>P3 Chatbot 运营全生命周期</li>
+        <li>Gap：未命中 / 低分 / 异常工单</li>
+        <li>索引重建热同步至 Knot</li>
       </ul>
     </div>
   </div>
 
-  <h2>3. 一条时序（仅保留一张图）</h2>
-  <div class="mermaid">
-sequenceDiagram
-  participant U as 用户
-  participant A as L1 主调度
-  participant S as L2 Skill
-  participant K as L3 证据
-  U->>A: 提问
-  A->>S: 路由白名单工具
-  S->>K: 检索 / 引用
-  alt 无证据或风控命中
-    A-->>U: 拒答 / 拦截
-  else 有证据
-    A-->>U: 可溯源回答
-  end
-  </div>
+  <h2>4. 七步业务闭环</h2>
+  <p class="muted">知识门户引流 → 业务菜单 → RAG → 可溯源回答 → Helpful 反馈 → 转人工/工单 → Gap Finder。</p>
 
-  <h2>4. 招聘 Agent 一眼对照</h2>
+  <h2>5. 关键能力与结果</h2>
   <table>
-    <thead><tr><th>层</th><th>Hiring</th></tr></thead>
+    <thead><tr><th>能力</th><th>落地</th></tr></thead>
     <tbody>
-      <tr><td>L0</td><td>对话 / Copilot 看板</td></tr>
-      <tr><td>L1</td><td>只调白名单 tool</td></tr>
-      <tr><td>L2–L3</td><td><code>Hire.screen / advance…</code> + 评分卡证据</td></tr>
-      <tr><td>L4</td><td>漏斗校准 · 反馈未齐则拒绝推进</td></tr>
+      <tr><td>内容安全</td><td>P0–P3 敏感词 · DFA+正则 · 输入输出双向扫描</td></tr>
+      <tr><td>VIP 分级</td><td>IOA 白名单 · 高管高优人工 SLA</td></tr>
+      <tr><td>知识闭环</td><td>建库 → 用库 → Gap 补库；未命中率 <strong>6%</strong></td></tr>
+      <tr><td>工作台</td><td>Console 5 大板块 · 21 书架 / 135 文献</td></tr>
     </tbody>
   </table>
 
-  <h2>5. Follow-up</h2>
+  <h2>6. Follow-up</h2>
   <table>
     <thead><tr><th>追问</th><th>答法</th></tr></thead>
     <tbody>
-      <tr><td>98008 和 Knot 是一回事吗？</td><td>不是。入口产品名 vs 执行主智能体 vs Console 治理。</td></tr>
-      <tr><td>VOC 公开版为何无 LLM？</td><td>先钉死能力层与护栏；挂模型时 Skill 边界不变。</td></tr>
-      <tr><td>Gap 怎么类比？</td><td>未命中→补 FAQ；VOC 侧用 Kit 批处理更新语料/规则。</td></tr>
+      <tr><td>98008 和 Knot？</td><td>98008 是入口产品名；Knot 是执行主智能体；Console 是治理。</td></tr>
+      <tr><td>为什么要 12 子 Agent？</td><td>业务域隔离 + 各绑权限书架，避免一个大模型乱翻全库。</td></tr>
+      <tr><td>Gap 三类源？</td><td>未命中 · 低分反馈 · 异常工单 → 聚类排序 → 运营补 FAQ。</td></tr>
     </tbody>
   </table>
 
-  <div class="footer"><a href="04-voc.html">VOC 详解 →</a> · <a href="../index.html">回总览</a></div>
+  <div class="footer">本页仅 98008 全栈 · <a href="11-voc-agent.html">理想 VOC Agent 独立页 →</a></div>
 </main>
 </body>
 </html>

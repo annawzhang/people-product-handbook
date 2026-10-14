@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>04 用户原声 · Handbook</title>
+<title>04 用户原声 Kit · Handbook</title>
 <link rel="stylesheet" href="../styles.css"/>
 <script type="module">
   import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
@@ -12,91 +12,59 @@
 </head>
 <body class="theme-voc">
 <header class="top">
-  <div class="brand"><strong>04 用户原声</strong><span>VOC Kit + Voice Agent</span></div>
+  <div class="brand"><strong>04 用户原声 Kit</strong><span>批处理洞察 · 非 Agent 全栈页</span></div>
   <nav class="nav">
     <a href="../index.html">总览</a>
-    <a href="01-hiring.html">招聘</a>
     <a href="03-stats.html">人力量化</a>
-    <a class="on" href="04-voc.html">用户原声</a>
+    <a class="on" href="04-voc.html">用户原声 Kit</a>
+    <a href="11-voc-agent.html">VOC Agent</a>
     <a href="05-outreach.html">触达护栏</a>
-    <a href="10-agent-capability.html">Agent 能力层</a>
   </nav>
 </header>
 <main class="wrap">
   <div class="hero">
-    <h1>原声进决策，话术过质检</h1>
-    <p class="quote-strip">「无引用原声，不得回答。」—— VOC Agent 的硬约束，对齐 98008 可溯源回答。</p>
-    <p class="muted">Kit 跑批出问题·结论·原声；Agent 对话追问。能力层对照见 <a href="10-agent-capability.html">§10</a>。</p>
-    <a class="cta" href="https://annawzhang.github.io/voc-voice-agent/">Demo · Voice Agent</a>
-    <a class="cta ghost" href="https://annawzhang.github.io/voc-insight-kit/">Insight 报告</a>
-    <a class="cta ghost" href="https://annawzhang.github.io/voc-voice-agent/tests.html">6 项测试</a>
+    <h1>VOC Insight Kit · 批处理</h1>
+    <p class="muted">评论 → 去重点赞 → 议题编码 → 价格关口 / 话术包 / 禁止规则。<br/>
+    <strong>对话 Agent 全栈</strong>在独立页，不和本页混写：<a href="11-voc-agent.html">§11 VOC Agent →</a></p>
+    <a class="cta" href="https://annawzhang.github.io/voc-insight-kit/">Demo · Insight 报告</a>
+    <a class="cta ghost" href="11-voc-agent.html">VOC Agent 全栈页</a>
+    <a class="cta ghost" href="https://github.com/annawzhang/voc-insight-kit">GitHub</a>
   </div>
 
-  <h2>1. 治理 vs 执行（两栏，不连环图）</h2>
-  <div class="compare">
-    <div class="pane lx" style="border-left-color:#9f1239">
-      <h3>L4 治理 · Insight Kit</h3>
-      <ul>
-        <li>评论去重 · 合并点赞</li>
-        <li>议题 codebook · 情感</li>
-        <li>价格关口 · 话术包</li>
-        <li>禁止规则配置（≈ 风控词库）</li>
-      </ul>
-    </div>
-    <div class="pane" style="background:#1c1917;color:#fafaf9;border:none">
-      <h3 style="color:#fff">L0–L3 执行 · Voice Agent</h3>
-      <ul style="color:#d6d3d1">
-        <li>detectIntent 主调度</li>
-        <li>Skill：search / 关口 / 四步 / 质检</li>
-        <li>证据：原声 citations</li>
-        <li>无 cite → 拒答</li>
-      </ul>
-    </div>
-  </div>
-
-  <h2>2. 对话时序</h2>
+  <h2>1. 批处理流水线</h2>
   <div class="mermaid">
-sequenceDiagram
-  participant U as 用户
-  participant A as VocAgent
-  participant Q as 原声语料
-  U->>A: 价格关口?
-  A->>Q: priceCeiling
-  alt 无引用
-    A-->>U: 拒答
-  else 有引用
-    A-->>U: 结论 + 原声卡片
-  end
+flowchart LR
+  C[评论快照] --> D[去重合并点赞]
+  D --> T[议题 codebook]
+  T --> S[情感/否定词]
+  S --> W[点赞加权]
+  W --> P[价格关口]
+  W --> R[问题·结论·原声]
+  R --> ADV[定价/上市/传播]
+  R --> SCR[四步话术]
+  SCR --> QA[禁止话术检查]
   </div>
 
-  <h2>3. Skill 白名单</h2>
+  <h2>2. 模块</h2>
   <table>
-    <thead><tr><th>调用</th><th>说明</th></tr></thead>
+    <thead><tr><th>模块</th><th>作用</th></tr></thead>
     <tbody>
-      <tr><td><code>VocAgent.answer</code></td><td>L1 主入口</td></tr>
-      <tr><td><code>search / topicStats / priceCeiling</code></td><td>L2 检索与议题</td></tr>
-      <tr><td><code>fourStep / checkScript</code></td><td>L2 话术与风控</td></tr>
+      <tr><td><code>voc.analyze</code></td><td>去重、编码、情感、价格、人群</td></tr>
+      <tr><td><code>voc.scripts</code></td><td>四步话术生成</td></tr>
+      <tr><td><code>config/codebook.toml</code></td><td>议题关键词</td></tr>
+      <tr><td><code>config/scripts.toml</code></td><td>话术与禁止规则</td></tr>
     </tbody>
   </table>
 
-  <h2>4. Follow-up</h2>
-  <table>
-    <thead><tr><th>追问</th><th>答法</th></tr></thead>
-    <tbody>
-      <tr><td>和 98008？</td><td>五层同构；证据从 FAQ 换成原声；风控换成禁止话术 + 无 cite 拒答。</td></tr>
-      <tr><td>幻觉？</td><td>citations 为空直接 error；UI 必渲染引用。</td></tr>
-      <tr><td>接销售触达？</td><td>过检后才进 Sales Ops 预览→授权→群发。</td></tr>
-    </tbody>
-  </table>
+  <h2>3. Best practices</h2>
+  <ul class="tight">
+    <li>结论旁必须有原声 ID。</li>
+    <li>价格关口报告样本量；单条过半标「弱证据」。</li>
+    <li>禁止规则配置化，业务可增删。</li>
+    <li>Kit 更新语料后，Agent（§11）只读证据，不在对话里改口径。</li>
+  </ul>
 
-  <h2>5. Demo</h2>
-  <ol>
-    <li>价格关口 → 看原声卡片</li>
-    <li>四步话术 → 检查「保证提车+竞品垃圾」→ 拦截</li>
-    <li>对照 Insight 报告口径</li>
-  </ol>
-
-  <div class="footer"><a href="10-agent-capability.html">← 能力层</a> · <a href="05-outreach.html">触达护栏 →</a></div>
+  <div class="footer"><a href="03-stats.html">← 人力量化</a> · <a href="11-voc-agent.html">VOC Agent 全栈 →</a></div>
 </main>
 </body>
 </html>

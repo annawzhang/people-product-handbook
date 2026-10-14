@@ -12,78 +12,77 @@
 </head>
 <body>
 <header class="top">
-  <div class="brand"><strong>07 Skills / SOP</strong><span>方法交给 Agent</span></div>
+  <div class="brand"><strong>07 Skills / SOP</strong><span>零密钥 · 可公开</span></div>
   <nav class="nav">
     <a href="../index.html">总览</a>
-    <a href="01-hiring.html">招聘</a>
-    <a href="02-talent.html">人才评估</a>
-    <a href="03-stats.html">人力量化</a>
-    <a href="04-voc.html">用户原声</a>
-    <a href="05-outreach.html">触达护栏</a>
-    <a href="06-hris.html">HRIS</a>
+    <a href="10-agent-capability.html">98008</a>
+    <a href="11-voc-agent.html">VOC Agent</a>
     <a class="on" href="07-skills.html">Skills</a>
   </nav>
 </header>
 <main class="wrap">
   <div class="hero">
-    <h1>Cursor Skill + Playbook</h1>
-    <p class="muted">把已验证的流程写成 Agent 可执行说明；脚本只用虚构 fixture，不含真实飞书/API 地址。</p>
-    <a class="cta" href="https://github.com/annawzhang/pm-hr-skills">Demo · 仓库</a>
-    <a class="cta ghost" href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/hr-materials-audit">材料审核 Skill</a>
+    <h1>可公开贡献的 Agent Skills</h1>
+    <p class="warn"><strong>零密钥：</strong>Skill / Playbook 不含 Token、内网、真实词库或员工数据；需要密钥的部署仓已 Private。</p>
+    <p class="muted">面试官可直接打开仓库复制 Skill；重点看「减幻觉」与「安全治理」两套通用护栏。</p>
+    <a class="cta" href="https://github.com/annawzhang/pm-hr-skills">仓库 · pm-hr-skills</a>
+    <a class="cta ghost" href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/citation-grounding">减幻觉 Skill</a>
+    <a class="cta ghost" href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/content-safety-rails">安全治理 Skill</a>
   </div>
 
-  <h2>1. 架构图</h2>
-  <div class="mermaid">
-flowchart LR
-  U[用户在 Cursor 点名 Skill] --> S[SKILL.md]
-  S --> REF[references 字段字典]
-  S --> SCR[scripts 可跑示例]
-  S --> PB[playbooks SOP]
-  PB --> DEMO[对应 GitHub Demo]
-  SCR --> FIX[fixtures 虚构 JSON]
+  <h2>1. 精选：两个通用护栏</h2>
+  <div class="grid">
+    <div class="card">
+      <h3>citation-grounding · 减幻觉</h3>
+      <p>无引用不下结论；检索空则拒答；数字带样本与口径。对齐 VOC Agent / 招聘证据化初筛。</p>
+      <p style="margin-top:8px"><a href="https://github.com/annawzhang/pm-hr-skills/blob/main/skills/citation-grounding/SKILL.md">打开 SKILL.md →</a></p>
+    </div>
+    <div class="card">
+      <h3>content-safety-rails · 安全治理</h3>
+      <p>P0–P3 分级处置；输入/输出双侧检查；虚构规则样例。对齐禁止话术 / 触达授权叙事。</p>
+      <p style="margin-top:8px"><a href="https://github.com/annawzhang/pm-hr-skills/blob/main/skills/content-safety-rails/SKILL.md">打开 SKILL.md →</a></p>
+    </div>
   </div>
 
-  <h2>2. 「API」形态</h2>
-  <p class="muted">Skill 不是 HTTP，而是 Agent 触发契约：description 决定何时加载；正文规定步骤与禁止项。</p>
+  <h2>2. 全量资产</h2>
   <table>
-    <thead><tr><th>资产</th><th>入口</th><th>本地调用</th></tr></thead>
+    <thead><tr><th>资产</th><th>入口</th><th>备注</th></tr></thead>
     <tbody>
-      <tr><td>材料审核 Skill</td><td><code>skills/hr-materials-audit/SKILL.md</code></td><td><code>python3 scripts/audit_rules.py --input fixtures/employees.json</code></td></tr>
-      <tr><td>结构化招聘 Skill</td><td><code>skills/structured-hiring/SKILL.md</code></td><td>产出评分卡/工具包模板</td></tr>
-      <tr><td>Playbooks</td><td><code>playbooks/*.md</code></td><td>招聘 / 触达 / VOC / 人力量化 SOP</td></tr>
+      <tr><td>减幻觉 Skill</td><td><code>skills/citation-grounding/</code></td><td>通用</td></tr>
+      <tr><td>安全治理 Skill</td><td><code>skills/content-safety-rails/</code></td><td>通用</td></tr>
+      <tr><td>结构化招聘 Skill</td><td><code>skills/structured-hiring/</code></td><td>业务</td></tr>
+      <tr><td>材料审核 Skill</td><td><code>skills/hr-materials-audit/</code></td><td>可跑 fixture</td></tr>
+      <tr><td>Playbooks</td><td><code>playbooks/*.md</code></td><td>招聘 / 触达 / VOC / 统计 / 护栏</td></tr>
     </tbody>
   </table>
 
-  <h2>3. Follow-up</h2>
+  <h2>3. 架构</h2>
+  <div class="mermaid">
+flowchart LR
+  U[用户点名 Skill] --> S[SKILL.md]
+  S --> PB[Playbook SOP]
+  S --> DEMO[公开 Demo 验证]
+  S --> FIX[虚构 fixture 可选]
+  </div>
+
+  <h2>4. Follow-up</h2>
   <table>
     <thead><tr><th>追问</th><th>答法</th></tr></thead>
     <tbody>
-      <tr><td>Skill 和 Demo 仓库啥关系？</td><td>Demo 证明能跑；Skill 让别人的 Agent 按同一 SOP 做事。</td></tr>
-      <tr><td>如何避免泄露内部系统？</td><td>公开版去掉真实 URL/Token；规则保留为示例包。</td></tr>
+      <tr><td>和开源贡献有什么关系？</td><td>方法级开源：别人装上 Skill 就能按同一护栏做事，无需我方密钥。</td></tr>
+      <tr><td>会不会泄露内部风控词库？</td><td>公开版只给分级方法 + 虚构样例；真实词库不进仓。</td></tr>
+      <tr><td>怎么证明有效？</td><td>点 VOC Agent：无 cite 拒答；禁止话术拦截——Skill 与 Demo 对齐。</td></tr>
     </tbody>
   </table>
 
-  <h2>4. 技术栈梳理</h2>
-  <p><span class="pill md">Markdown</span> <span class="pill py">Python 标准库脚本</span> Cursor Agent Skills 目录规范</p>
-
-  <h2>5. Best practices</h2>
-  <ul class="tight">
-    <li><code>description</code> 写清 WHAT + WHEN，便于自动发现。</li>
-    <li>默认 <code>disable-model-invocation: true</code>，重要 Skill 需显式点名。</li>
-    <li>脚本可 <code>--self-test</code>；fixture 提交进仓。</li>
-    <li>Playbook 用检查清单，避免空泛原则。</li>
-  </ul>
-
-  <h2>6. Demo 路径</h2>
+  <h2>5. Demo 路径</h2>
   <ol>
-    <li>打开仓库 README 表格，对照各 Demo 链接。</li>
-    <li>跑材料审核 <code>--self-test</code> 与 fixture 批处理。</li>
-    <li>把 Skill 拷进 Cursor Skills 目录，对话点名试一次。</li>
+    <li>打开减幻觉 / 安全治理两个 SKILL.md 各扫一眼原则。</li>
+    <li>VOC Agent：价格关口看引用；再测禁止话术。</li>
+    <li>Hiring Copilot：初筛证据高亮。</li>
   </ol>
 
-  <div class="warn">本手册与 Skills 均为求职/学习公开版，不代表任何雇主的内部系统。</div>
-
-  <div class="footer"><a href="06-hris.html">← HRIS</a> · <a href="08-github-guide.html">下一篇：如何使用我的 GitHub →</a></div>
+  <div class="footer"><a href="https://github.com/annawzhang/pm-hr-skills">GitHub 仓库</a> · <a href="../index.html">回总览</a></div>
 </main>
 </body>
 </html>

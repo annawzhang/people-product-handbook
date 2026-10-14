@@ -2,6 +2,11 @@
 
 **每个板块一页：架构图 · 引擎/API 调用 · Follow-up 面试追问 · 技术栈梳理 · Best practice · Demo 路径。**
 
+
+> **Copyright © 2026 张文婧 (Anna Zhang)** · [MIT License](./LICENSE) · [github.com/annawzhang](https://github.com/annawzhang)  
+> 欢迎学习与面试查阅；保留版权与许可声明。**禁止删除作者信息后冒充本人作品二次发表。** 公开内容为虚构/脱敏演示数据。
+
+
 [在线阅读](https://annawzhang.github.io/people-product-handbook/) · 静态 HTML + Mermaid，无构建
 
 > **数据已脱敏**：对应公开复刻仓库；演示数据虚构。不含真实员工/门店/薪酬原文/内网与密钥。

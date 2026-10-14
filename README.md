@@ -19,6 +19,7 @@
 | 07 | [Skills / SOP](sections/07-skills.html) | [pm-hr-skills](https://github.com/annawzhang/pm-hr-skills) |
 | 08 | [如何使用我的 GitHub](sections/08-github-guide.html) | 面试官路线 / 置顶 / 带逛话术 |
 | 09 | [商赛四件套](sections/09-bizcase.html) | [bizcase-strategy-lab](https://annawzhang.github.io/bizcase-strategy-lab/) |
+| 10 | [Agent 能力层](sections/10-agent-capability.html) | 98008 范式 · [VOC Agent](https://annawzhang.github.io/voc-voice-agent/) · [Hiring Agent](https://annawzhang.github.io/hiring-agent/) |
 | — | 招聘 Agent | [hiring-agent](https://annawzhang.github.io/hiring-agent/) |
 
 ## 本地预览

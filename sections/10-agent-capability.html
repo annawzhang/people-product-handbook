@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>10 Agent 能力层 · Handbook</title>
+<link rel="stylesheet" href="../styles.css"/>
+<script type="module">
+  import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+  mermaid.initialize({ startOnLoad: true, theme: "neutral", securityLevel: "loose" });
+</script>
+</head>
+<body>
+<header class="top">
+  <div class="brand"><strong>10 Agent 能力层</strong><span>98008 范式 → 理想 VOC / 招聘 Agent</span></div>
+  <nav class="nav">
+    <a href="../index.html">总览</a>
+    <a href="01-hiring.html">招聘</a>
+    <a href="04-voc.html">用户原声</a>
+    <a href="08-github-guide.html">GitHub 用法</a>
+    <a href="09-bizcase.html">商赛</a>
+    <a class="on" href="10-agent-capability.html">Agent 能力层</a>
+  </nav>
+</header>
+<main class="wrap">
+  <div class="hero">
+    <h1>同一套能力层，两套业务 Agent</h1>
+    <p class="muted">腾讯 Chatbot <strong>98008</strong> 的产品拆法：入口产品 ≠ 执行基座；主智能体分流；Skill / 子 Agent 绑知识；治理层监控补库。<br/>
+    理想 <strong>VOC Voice Agent</strong> 与招聘 Agent 用同一能力层并行设计——公开复刻为规则引擎，不托管黑盒 LLM。</p>
+    <a class="cta" href="https://annawzhang.github.io/voc-voice-agent/">Demo · VOC Agent</a>
+    <a class="cta ghost" href="https://annawzhang.github.io/hiring-agent/">Demo · Hiring Agent</a>
+    <a class="cta ghost" href="https://annawzhang.github.io/enterprise-ai-console/">Demo · Console</a>
+    <a class="cta ghost" href="04-voc.html">VOC 详解 →</a>
+  </div>
+
+  <h2>1. 能力层总图（通用）</h2>
+  <div class="mermaid">
+flowchart TB
+  subgraph L0 [L0 入口层 · 产品名]
+    E[对话入口 / 工作台入口]
+  end
+  subgraph L1 [L1 主调度 · Orchestrator]
+    O[意图识别 · 路由 · 会话]
+  end
+  subgraph L2 [L2 能力 Skill / 子 Agent]
+    S1[检索 / RAG]
+    S2[业务工具]
+    S3[风控 / 质检]
+    S4[升级 / 转人工]
+  end
+  subgraph L3 [L3 知识与证据]
+    K[书架 / 语料 / 评分卡引擎]
+  end
+  subgraph L4 [L4 治理层 · Console]
+    G[监控 · 配置 · Gap / 补库 · 审计]
+  end
+  E --> O --> S1 & S2 & S3 & S4
+  S1 & S2 --> K
+  S3 --> K
+  O -.-> G
+  K -.-> G
+  </div>
+  <div class="note">面试一句话：<strong>98008 = 员工前端产品名；Knot = 执行基座；Console = 运营治理。</strong> Agent 回答必须落到 L3 证据，L2 风控可拦，L4 负责把缺口补回去。</div>
+
+  <h2>2. 腾讯 98008 · 能力层怎么拆</h2>
+  <table>
+    <thead><tr><th>层</th><th>98008 / Knot 落点</th><th>产品含义</th></tr></thead>
+    <tbody>
+      <tr><td>L0 入口</td><td>Chatbot 98008</td><td>员工侧聊天产品名；不是「整个系统」</td></tr>
+      <tr><td>L1 主调度</td><td>Knot 主智能体</td><td>听懂问题、分流、会话管理、全局 RAG 入口</td></tr>
+      <tr><td>L2 Skill / 子 Agent</td><td>RAG · 敏感词风控 · IOA VIP · OEC 工单 + <strong>12 业务子 Agent</strong></td><td>各绑不同权限化书架；薪酬/福利/税务/系统操作等</td></tr>
+      <tr><td>L3 知识</td><td>21 书架 / 135 文献 · 向量库</td><td>可溯源回答；权限隔离</td></tr>
+      <tr><td>L4 治理</td><td>Console P3 运营 · Gap Finder · P0–P3 风控面板</td><td>建库→用库→补库；未命中率盯到 6%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="mermaid">
+flowchart LR
+  U[员工] --> B[98008 入口]
+  B --> KNOT[Knot 主智能体]
+  KNOT --> R[RAG Skill]
+  KNOT --> RISK[风控 Skill P0-P3]
+  KNOT --> VIP[VIP / IOA Skill]
+  KNOT --> TICKET[工单 Skill]
+  KNOT --> SUB[12 业务子 Agent]
+  SUB --> LIB[知识图书馆书架]
+  R --> LIB
+  RISK --> SCAN[输入/输出双向扫描]
+  KNOT --> LOG[问询埋点]
+  LOG --> GAP[Gap Finder]
+  GAP --> CON[Console 补 FAQ]
+  CON --> LIB
+  </div>
+
+  <h3>98008 七步业务闭环（入口侧）</h3>
+  <p class="muted">知识门户引流 → 业务菜单 → RAG → 可溯源回答 → Helpful 反馈 → 转人工/工单 → Gap Finder。</p>
+
+  <h2>3. 理想 VOC Agent · 并行能力层</h2>
+  <p class="muted">同一分层，换业务对象：证据从「书架 FAQ」换成「社媒原声语料」；风控从「敏感词 P0–P3」换成「禁止话术 + 无引用拒答」。</p>
+  <table>
+    <thead><tr><th>层</th><th>VOC Voice Agent 落点</th><th>对齐 98008</th></tr></thead>
+    <tbody>
+      <tr><td>L0 入口</td><td>VOC Voice Agent 对话页</td><td>≈ 98008 前端</td></tr>
+      <tr><td>L1 主调度</td><td><code>VocAgent.answer</code> + <code>detectIntent</code></td><td>≈ Knot 路由</td></tr>
+      <tr><td>L2 Skill</td><td>search · topicStats · priceCeiling · fourStep · checkScript</td><td>≈ RAG / 业务工具 / 风控 Skill</td></tr>
+      <tr><td>L3 知识</td><td>议题 codebook + 原声语料（点赞加权）</td><td>≈ 书架；<strong>无 cite 不下结论</strong></td></tr>
+      <tr><td>L4 治理</td><td>VOC Insight Kit 跑批 · scripts.toml 禁止规则 · tests.html</td><td>≈ Console + Gap（批处理补议题/话术）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="mermaid">
+flowchart TB
+  subgraph govern [L4 治理 · 理想侧]
+    KIT[VOC Insight Kit 跑批]
+    CFG[codebook / scripts 配置]
+    TEST[tests 6 项]
+  end
+  subgraph exec [L0–L3 执行 · Voice Agent]
+    UI[对话入口]
+    ORCH[detectIntent 主调度]
+    SK[Skill 白名单]
+    QUOTES[(原声语料)]
+    UI --> ORCH --> SK
+    SK --> QUOTES
+  end
+  KIT --> QUOTES
+  CFG --> SK
+  TEST -.-> UI
+  ORCH -->|citations 为空| BLOCK[拒答 / 不臆造]
+  SK -->|禁止话术命中| BLOCK
+  </div>
+
+  <div class="mermaid">
+sequenceDiagram
+  participant U as 销售/策略
+  participant A as VocAgent L1
+  participant S as Skill L2
+  participant Q as 原声 L3
+  participant G as Kit/规则 L4
+  U->>A: 价格关口?
+  A->>A: detectIntent
+  A->>S: priceCeiling
+  S->>Q: 价位点 × 点赞加权
+  alt 无原声
+    A-->>U: error 拒答
+  else 有原声
+    S-->>A: blocks + citations
+    A-->>U: 结论 + 原声卡片
+  end
+  Note over G,Q: Kit 批处理更新语料与禁止规则，类似 Gap 补库
+  </div>
+
+  <h2>4. 招聘 Agent · 同一范式（对照）</h2>
+  <table>
+    <thead><tr><th>层</th><th>Hiring Agent</th></tr></thead>
+    <tbody>
+      <tr><td>L0</td><td>对话入口 / Copilot 看板</td></tr>
+      <tr><td>L1</td><td>Agent 解析意图 → 只调白名单 tool</td></tr>
+      <tr><td>L2</td><td><code>Hire.screen / advance / feedback / sla…</code></td></tr>
+      <tr><td>L3</td><td>评分卡引擎 + 简历证据</td></tr>
+      <tr><td>L4</td><td>分析漏斗 / 校准 · 推进护栏（反馈未齐则拒绝）</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. Follow-up</h2>
+  <table>
+    <thead><tr><th>追问</th><th>答法</th></tr></thead>
+    <tbody>
+      <tr><td>98008 和 Knot 是不是一回事？</td><td>不是。98008 是入口产品名；Knot 是执行层主智能体；Console 是治理层。</td></tr>
+      <tr><td>VOC 公开版为什么没有 LLM？</td><td>先把能力层与护栏做对：无引用拒答、禁止话术；产品化再挂模型，Skill 边界不变。</td></tr>
+      <tr><td>和 Gap Finder 怎么类比？</td><td>98008：未命中→聚类→补 FAQ；VOC：批处理 Kit 更新语料/议题，Agent 只读证据。</td></tr>
+      <tr><td>子 Agent 和 Skill 区别？</td><td>子 Agent = 业务域路由+专属书架；Skill = 可复用能力块（检索/风控/工单）。VOC 公开版用 Skill 白名单等价。</td></tr>
+    </tbody>
+  </table>
+
+  <h2>6. Demo 路径</h2>
+  <ol>
+    <li>本页对照表：指 L0–L4 各说一句。</li>
+    <li>VOC Agent：价格关口 → 原声卡片；再测禁止话术拦截。</li>
+    <li>Hiring Agent：故意推进触发护栏拒绝。</li>
+    <li>Console / Gap 叙事：建库→用库→补库（作品集腾讯页）。</li>
+  </ol>
+
+  <div class="footer"><a href="09-bizcase.html">← 商赛</a> · <a href="04-voc.html">VOC 详解 →</a> · <a href="../index.html">回总览</a></div>
+</main>
+</body>
+</html>

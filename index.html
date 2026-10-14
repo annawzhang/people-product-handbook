@@ -25,6 +25,7 @@
     <a href="sections/07-skills.html">Skills</a>
     <a href="sections/08-github-guide.html">GitHub 用法</a>
     <a href="sections/09-bizcase.html">商赛</a>
+    <a href="sections/10-agent-capability.html">Agent 能力层</a>
   </nav>
 </header>
 <main class="wrap">
@@ -53,11 +54,17 @@ flowchart TB
     H[结构化招聘评分卡]
     S[人力量化统计]
   end
-  subgraph act [执行层]
-    HA[招聘看板 / Agent]
-    VA[原声 Agent]
+  subgraph act [执行层 Agent]
+    HA[招聘 Agent]
+    VA[VOC Agent]
     OA[触达审批流水线]
     HR[HRIS 审批]
+  end
+  subgraph agentcap [能力层范式 · 对齐 98008]
+    L0[入口] --> L1[主调度]
+    L1 --> L2[Skill / 子 Agent]
+    L2 --> L3[知识 / 原声证据]
+    L3 -.-> L4[治理 Console / Kit]
   end
   R --> T --> HA
   R --> H --> HA
@@ -67,6 +74,8 @@ flowchart TB
   V --> OA
   O --> HR
   HA --> S
+  HA -.-> L1
+  VA -.-> L1
   subgraph strategy [策略 / 商赛]
     BC[市场 · 竞品 · UE · 情景]
   end
@@ -110,6 +119,10 @@ flowchart TB
     <a class="card" href="sections/09-bizcase.html" style="text-decoration:none;color:inherit">
       <h3>09 商赛四件套 <span class="pill py">Python</span></h3>
       <p>TAM/SAM/SOM · 竞品 · UE · 情景 · 波特五力 · 商业监控（苏州零售虚构案）。</p>
+    </a>
+    <a class="card" href="sections/10-agent-capability.html" style="text-decoration:none;color:inherit">
+      <h3>10 Agent 能力层 <span class="pill js">架构</span></h3>
+      <p>按 Chatbot 98008：入口→主调度→Skill→知识→治理；并行 VOC / 招聘 Agent。</p>
     </a>
   </div>
 

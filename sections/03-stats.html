@@ -79,18 +79,8 @@ flowchart LR
 # 招聘分析分档通过率 ≈ calibration_bins（分数归一化后）
 # Hiring Agent 开实验前可先调 sample_size_two_prop</pre>
 
-  <h2>3. Follow-up</h2>
-  <table>
-    <thead><tr><th>追问</th><th>答法</th></tr></thead>
-    <tbody>
-      <tr><td>p&lt;0.05 就一定要全量推广？</td><td>还要看 lift、功效、是否多重比较、业务成本。</td></tr>
-      <tr><td>为什么漏斗要用 Wilson 而不是正态近似？</td><td>小样本/极端比例时 Wilson 更稳。</td></tr>
-      <tr><td>删失是什么？</td><td>观察结束时尚未入职（仍在 Offer 等），不能当成失败。</td></tr>
-      <tr><td>和你统计学背景怎么挂钩？</td><td>本硕方法直接产品化：能算、能解释、能进 SOP。</td></tr>
-    </tbody>
-  </table>
 
-  <h2>4. 技术栈梳理</h2>
+  <h2>3. 技术栈梳理</h2>
   <table>
     <thead><tr><th>项</th><th>选择</th></tr></thead>
     <tbody>
@@ -101,7 +91,7 @@ flowchart LR
     </tbody>
   </table>
 
-  <h2>5. Best practices</h2>
+  <h2>4. Best practices</h2>
   <ul class="tight">
     <li>先算 n 再开跑；样本不够时报告写「效力不足」而不是「没差异」。</li>
     <li>漏斗同时看点估计与 CI，避免「掉了 2 个人」过度解读。</li>
@@ -109,7 +99,7 @@ flowchart LR
     <li>与业务约定：显著 + 最小可感知提升（如回复率 +5pp）才推全。</li>
   </ul>
 
-  <h2>6. Demo 路径</h2>
+  <h2>5. Demo 路径</h2>
   <ol>
     <li>打开报告 KPI：AB 结论、lift、每组样本量、中位周期。</li>
     <li>漏斗表指一格 CI，解释为何不能只看转化率数字。</li>

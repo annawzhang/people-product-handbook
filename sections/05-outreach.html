@@ -67,27 +67,18 @@ POST /v1/outreach/approve  { preview_id, actor }
 POST /v1/outreach/run      { task_id } → { status, message_ids[] }
 GET  /v1/outreach/audit    { message_id }</pre>
 
-  <h2>3. Follow-up</h2>
-  <table>
-    <thead><tr><th>追问</th><th>答法</th></tr></thead>
-    <tbody>
-      <tr><td>和飞书 SOP 产品化什么关系？</td><td>作品集里的预览→授权→群发，在此变成可测流水线。</td></tr>
-      <tr><td>为什么不先接真 IM？</td><td>先把护栏测绿；连接器可替换，规则不能漂。</td></tr>
-      <tr><td>错误发送如何追责？</td><td>message_id + audit 回溯谁批准、发到哪。</td></tr>
-    </tbody>
-  </table>
 
-  <h2>4. 技术栈梳理</h2>
+  <h2>3. 技术栈梳理</h2>
   <p><span class="pill py">Python 标准库</span> 场景回放 HTML · 无第三方 IM SDK（公开版模拟发送）</p>
 
-  <h2>5. Best practices</h2>
+  <h2>4. Best practices</h2>
   <ul class="tight">
     <li>护栏配置与代码同审；只改文档不算上线。</li>
     <li>健康检查阈值由业务签字（如达成率 &gt;100% 必拦）。</li>
     <li>VOC 话术必须先过禁止检查，再进本流水线。</li>
   </ul>
 
-  <h2>6. Demo 路径</h2>
+  <h2>5. Demo 路径</h2>
   <ol>
     <li>打开场景回放，走一遍「重复触发被幂等拦住」。</li>
     <li>演示窗外时间 / 健康检查失败不发。</li>

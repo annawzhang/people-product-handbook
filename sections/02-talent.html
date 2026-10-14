@@ -85,18 +85,8 @@ flowchart TB
     </tbody>
   </table>
 
-  <h2>3. Follow-up</h2>
-  <table>
-    <thead><tr><th>追问</th><th>答法</th></tr></thead>
-    <tbody>
-      <tr><td>为什么不用机器学习排序？</td><td>业务要改得动、讲得清；先专家加权 + AB，再考虑学习排序。</td></tr>
-      <tr><td>混合样本为什么要扔掉？</td><td>同一人进两组会污染因果；NOT EXISTS 三层隔离。</td></tr>
-      <tr><td>准确率数字如何解读？</td><td>报告里是虚构数据上的识别提升（二元→梯度）；真实业务需重标定。</td></tr>
-      <tr><td>和招聘评分卡什么关系？</td><td>人才评分管「线索池优先级」；招聘评分卡管「岗位匹配与面试」。</td></tr>
-    </tbody>
-  </table>
 
-  <h2>4. 技术栈梳理</h2>
+  <h2>3. 技术栈梳理</h2>
   <table>
     <thead><tr><th>层</th><th>选型</th></tr></thead>
     <tbody>
@@ -108,7 +98,7 @@ flowchart TB
     </tbody>
   </table>
 
-  <h2>5. Best practices</h2>
+  <h2>4. Best practices</h2>
   <ul class="tight">
     <li>权重变更必须带一版 AB 或回溯校准，禁止「拍脑袋调参」。</li>
     <li>缺失值显式进 missing，不要默当 0 分。</li>
@@ -117,7 +107,7 @@ flowchart TB
     <li>下一步增强：校准图 + Brier（可复用 People Stats Kit）。</li>
   </ul>
 
-  <h2>6. Demo 路径</h2>
+  <h2>5. Demo 路径</h2>
   <ol>
     <li>打开报告：看分层人数与示例卡片「主要得分来自…」。</li>
     <li>讲清地域维度：二元标签 → 四因子梯度。</li>

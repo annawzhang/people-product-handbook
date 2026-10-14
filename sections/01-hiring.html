@@ -95,18 +95,8 @@ POST /v1/interviews/{id}/feedback
 GET  /v1/jobs/{id}/analytics
 POST /v1/agent/chat             { message, actor_id }  → tool_calls[]</pre>
 
-  <h2>3. Follow-up（面试追问怎么答）</h2>
-  <table>
-    <thead><tr><th>追问</th><th>答法要点</th></tr></thead>
-    <tbody>
-      <tr><td>为什么不用大模型直接打分？</td><td>初筛要可审计；关键词+证据是刻意选择。LLM 可做语义检索，但仍须回贴原文。</td></tr>
-      <tr><td>独立反馈和校准怎么配合？</td><td>提交前不可见防锚定；提交后看平均分偏差识别偏宽松/偏严。</td></tr>
-      <tr><td>和 Greenhouse 差在哪？</td><td>学的是结构化方法；公开版是教学复刻，无排班/邮件集成。</td></tr>
-      <tr><td>Agent 版如何防胡作非为？</td><td>只能调白名单工具；引擎 throw 即对用户说「规则拒绝」。</td></tr>
-    </tbody>
-  </table>
 
-  <h2>4. 技术栈梳理</h2>
+  <h2>3. 技术栈梳理</h2>
   <table>
     <thead><tr><th>层</th><th>选型</th><th>原因</th></tr></thead>
     <tbody>
@@ -114,11 +104,11 @@ POST /v1/agent/chat             { message, actor_id }  → tool_calls[]</pre>
       <tr><td>状态</td><td>localStorage</td><td>无后端也能推进/重置</td></tr>
       <tr><td>引擎</td><td>纯函数 Hire.*</td><td>tests.html 可测</td></tr>
       <tr><td>数据</td><td>种子 RNG 生成 54 人</td><td>可复现管道分布</td></tr>
-      <tr><td>未用</td><td>React / 云 LLM / DB</td><td>求职作品优先可打开、可讲清</td></tr>
+      <tr><td>未用</td><td>React / 云 LLM / DB</td><td>优先可打开、可自测</td></tr>
     </tbody>
   </table>
 
-  <h2>5. Best practices</h2>
+  <h2>4. Best practices</h2>
   <ul class="tight">
     <li>开岗时和用人经理共同锁评分卡，之后不随意改权重「救」某个候选人。</li>
     <li>必备维度缺失只给「待定」，不要用其它维度高分掩盖。</li>
@@ -127,7 +117,7 @@ POST /v1/agent/chat             { message, actor_id }  → tool_calls[]</pre>
     <li>Agent 输出必须带 tool 结果摘要，禁止无调用就下录用结论。</li>
   </ul>
 
-  <h2>6. Demo 路径（建议 3 分钟）</h2>
+  <h2>5. Demo 路径（建议 3 分钟）</h2>
   <ol>
     <li>打开看板 → 点超时候选人 → 看证据高亮与 knockouts。</li>
     <li>切「我的面试」→ 不写满 15 字提交 → 看报错；写完后解锁他人反馈。</li>

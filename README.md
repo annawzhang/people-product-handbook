@@ -19,7 +19,7 @@
 | [字节](sections/co-byte.html) | 招聘 ETL → 八维量化 → AB/监控 → 校招决策 | Talent Scoring · Stats Kit |
 | [腾讯](sections/co-tencent.html) | SSC 工作台 0→1 · Agent 知识闭环 · 费用分摊提效 | 98008 · Console · Gap · Cost Allocation |
 | [TCL](sections/co-tcl.html) | HRIS 看板 · 用户访谈 · 审批提速 | HRIS Prototype |
-| [附录](sections/co-appendix.html) | 非实习交付：方法 / 竞赛 / 学习复刻 | Skills · 商赛 · GitHub 用法 · Hiring Agent（学习） |
+| [附录](sections/co-appendix.html) | 非实习交付：方法 / 竞赛 / 学习复刻 | Skills · 商赛 · Hiring Agent（学习） |
 
 ## 明细页（挂在公司入口下）
 
@@ -29,7 +29,7 @@
 | [人才评分](sections/02-talent.html) · [统计工具箱](sections/03-stats.html) | 字节 |
 | [98008](sections/10-agent-capability.html) | 腾讯 |
 | [HRIS](sections/06-hris.html) | TCL |
-| [Hiring Agent](sections/01-hiring.html) · [Skills](sections/07-skills.html) · [商赛](sections/09-bizcase.html) · [GitHub 用法](sections/08-github-guide.html) · [分层建设](sections/12-layer-build.html) | 附录 |
+| [Hiring Agent](sections/01-hiring.html) · [Skills](sections/07-skills.html) · [商赛](sections/09-bizcase.html) · [分层建设](sections/12-layer-build.html) | 附录 |
 
 ## 本地预览
 

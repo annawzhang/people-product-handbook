@@ -75,27 +75,18 @@ POST /v1/workflows/{id}/act   { action, comment, actor }
 GET  /v1/org/headcount
 POST /v1/oa/sync              { workflow_id } → { status, retries }</pre>
 
-  <h2>3. Follow-up</h2>
-  <table>
-    <thead><tr><th>追问</th><th>答法</th></tr></thead>
-    <tbody>
-      <tr><td>满编还能入职吗？</td><td>能，但自动加超编审批节点。</td></tr>
-      <tr><td>审批中组织变了怎么办？</td><td>链在提交时快照，进行中不受影响。</td></tr>
-      <tr><td>OA 失败？</td><td>退避重试，仍失败进补偿队列；成功单号幂等跳过。</td></tr>
-    </tbody>
-  </table>
 
-  <h2>4. 技术栈梳理</h2>
+  <h2>3. 技术栈梳理</h2>
   <p><span class="pill js">原生 JS</span> localStorage · 无后端 · tests.html</p>
 
-  <h2>5. Best practices</h2>
+  <h2>4. Best practices</h2>
   <ul class="tight">
     <li>同一人多节点合并，避免重复点两次。</li>
     <li>驳回必须写原因；看板监控超时单。</li>
     <li>OA 字段映射表与代码一并评审。</li>
   </ul>
 
-  <h2>6. Demo 路径</h2>
+  <h2>5. Demo 路径</h2>
   <ol>
     <li>打开 <code>?demo</code> 自动走一单并同步 OA。</li>
     <li>切换身份看待办变化。</li>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>People Product Handbook · 人力产品开源手册</title>
+<title>People Product Handbook · 按实习经历</title>
 <link rel="stylesheet" href="styles.css"/>
 <script type="module">
   import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
@@ -12,144 +12,99 @@
 </head>
 <body>
 <header class="top">
-  <div class="brand"><strong>People Product Handbook</strong><span>人力 / 人才产品开源手册</span></div>
+  <div class="brand"><strong>People Product Handbook</strong><span>按简历四段实习归类 · 脱敏演示</span></div>
   <span class="badge">数据已脱敏 · 虚构演示 · 无真实员工/门店/薪酬原文</span>
   <nav class="nav">
     <a class="on" href="index.html">总览</a>
-    <a href="sections/01-hiring.html">招聘</a>
-    <a href="sections/02-talent.html">人才评估</a>
-    <a href="sections/03-stats.html">人力量化</a>
-    <a href="sections/04-voc.html">用户原声</a>
-    <a href="sections/05-outreach.html">触达护栏</a>
-    <a href="sections/06-hris.html">HRIS</a>
-    <a href="sections/07-skills.html">Skills</a>
-    <a href="sections/08-github-guide.html">GitHub 用法</a>
-    <a href="sections/09-bizcase.html">商赛</a>
-    <a href="sections/10-agent-capability.html">98008 Agent</a>
-    <a href="sections/11-voc-agent.html">VOC Agent</a>
-    <a href="sections/12-layer-build.html">分层建设</a>
+    <a href="sections/co-lixiang.html">理想</a>
+    <a href="sections/co-byte.html">字节</a>
+    <a href="sections/co-tencent.html">腾讯</a>
+    <a href="sections/co-tcl.html">TCL</a>
+    <a href="sections/co-appendix.html">附录</a>
   </nav>
 </header>
 <main class="wrap">
   <div class="hero">
-    <h1>从线索与原声，到可解释模型、实验与 Agent</h1>
-    <p class="warn" style="margin-top:10px"><strong>数据脱敏：</strong>本手册与所链 Demo 仅含虚构或已脱敏内容；不含真实员工/候选人、门店明细、薪酬福利原文、内网地址与密钥。系统名与指标为面试公开叙事下的泛化表述。</p>
-    <p class="muted">按板块写清：架构图 · 引擎/API 调用 · Follow-up（面试追问）· 技术栈梳理 · Best practice · Demo。</p>
+    <h1>按公司看：在哪做的、做什么用</h1>
+    <p class="warn" style="margin-top:10px"><strong>数据脱敏：</strong>本手册与所链 Demo 仅含虚构或已脱敏内容；不含真实员工/候选人、门店明细、薪酬福利原文、内网地址与密钥。</p>
+    <p class="muted">导航对齐简历四段实习。<strong>不再</strong>把「招聘 / 原声 / HRIS」等主题平铺混放——同一公司下的交付归在同一入口。</p>
     <p>
-      <a class="cta" href="sections/08-github-guide.html">如何使用我的 GitHub</a>
-      <a class="cta ghost" href="https://annawzhang.github.io/hiring-agent/">Hiring Agent</a>
-      <a class="cta ghost" href="https://github.com/annawzhang/pm-hr-skills">Skills 仓</a>
-      <a class="cta ghost" href="https://annawzhang.github.io/portfolio/">作品集</a>
+      <a class="cta" href="https://annawzhang.github.io/portfolio/">作品集</a>
+      <a class="cta ghost" href="sections/co-appendix.html">方法附录</a>
     </p>
   </div>
 
-  <h2>产品地图</h2>
-  <div class="mermaid">
-flowchart TB
-  subgraph ingest [输入]
-    R[简历 / 线索]
-    V[用户原声 / 社媒]
-    O[组织与流程事件]
-  end
-  subgraph decide [决策层]
-    T[人才八维评分]
-    H[结构化招聘评分卡]
-    S[人力量化统计]
-  end
-  subgraph act [执行层 Agent]
-    HA[招聘 Agent]
-    VA[VOC Agent]
-    OA[触达审批流水线]
-    HR[HRIS 审批]
-  end
-  subgraph agentcap [能力层范式 · 对齐 98008]
-    L0[入口] --> L1[主调度]
-    L1 --> L2[Skill / 子 Agent]
-    L2 --> L3[知识 / 原声证据]
-    L3 -.-> L4[治理 Console / Kit]
-  end
-  R --> T --> HA
-  R --> H --> HA
-  S -.-> T
-  S -.-> H
-  V --> VA
-  V --> OA
-  O --> HR
-  HA --> S
-  HA -.-> L1
-  VA -.-> L1
-  subgraph strategy [策略 / 商赛]
-    BC[市场 · 竞品 · UE · 情景]
-  end
-  S -.-> BC
-  </div>
-
-  <h2>板块地图</h2>
+  <h2>简历对齐 · 四段实习</h2>
   <div class="grid">
-    <a class="card" href="sections/01-hiring.html" style="text-decoration:none;color:inherit">
-      <h3>01 结构化招聘 <span class="pill js">JS</span></h3>
-      <p>评分卡初筛、独立反馈、SLA、漏斗。Demo：Hiring Copilot + Hiring Agent。</p>
+    <a class="card" href="sections/co-lixiang.html" style="text-decoration:none;color:inherit">
+      <h3>理想汽车 <span class="pill js">销售/数据策略</span></h3>
+      <p><strong>作用：</strong>车主&竞品策略 → 意向分层与话术跟进 → 提升邀约/试驾转化。<br/>
+      含：VOC 批处理 · VOC Agent · 触达护栏 · 经营舱</p>
     </a>
-    <a class="card" href="sections/02-talent.html" style="text-decoration:none;color:inherit">
-      <h3>02 人才评估模型 <span class="pill py">Python</span></h3>
-      <p>八维可解释加权、S+/S/A/B/C、NOT EXISTS AB、索引调优。</p>
+    <a class="card" href="sections/co-byte.html" style="text-decoration:none;color:inherit">
+      <h3>字节跳动 <span class="pill py">Seed 招聘数据</span></h3>
+      <p><strong>作用：</strong>招聘 ETL → 八维人才量化 → AB/监控 → 校招决策。<br/>
+      含：可解释评分 · 统计工具箱（支撑 AB）</p>
     </a>
-    <a class="card" href="sections/03-stats.html" style="text-decoration:none;color:inherit">
-      <h3>03 人力量化统计 <span class="pill py">Python</span></h3>
-      <p>z 检验、样本量、Wilson CI、Kaplan–Meier、评分校准。</p>
+    <a class="card" href="sections/co-tencent.html" style="text-decoration:none;color:inherit">
+      <h3>腾讯 <span class="pill js">AI 数据产品</span></h3>
+      <p><strong>作用：</strong>海外 SSC 工作台 0→1 · Agent 知识闭环 · 费用分摊提效。<br/>
+      含：98008/Console · Gap · 分摊工具</p>
     </a>
-    <a class="card" href="sections/04-voc.html" style="text-decoration:none;color:inherit">
-      <h3>04 用户原声 Kit <span class="pill py">Python</span></h3>
-      <p>批处理：去重点赞 · 议题 · 价格关口 · 话术包。Agent 全栈见 §11。</p>
-    </a>
-    <a class="card" href="sections/05-outreach.html" style="text-decoration:none;color:inherit">
-      <h3>05 触达护栏 <span class="pill py">Python</span></h3>
-      <p>幂等锁、时间窗、健康检查、预览授权、message_id 留痕。</p>
-    </a>
-    <a class="card" href="sections/06-hris.html" style="text-decoration:none;color:inherit">
-      <h3>06 HRIS 流程 <span class="pill js">JS</span></h3>
-      <p>入转调离审批链、编制、OA 映射与重试。</p>
-    </a>
-    <a class="card" href="sections/07-skills.html" style="text-decoration:none;color:inherit">
-      <h3>07 Skills / SOP <span class="pill md">MD</span></h3>
-      <p>零密钥开源：减幻觉引用护栏 · 安全治理分级 · 招聘/VOC Playbook。</p>
-    </a>
-    <a class="card" href="sections/08-github-guide.html" style="text-decoration:none;color:inherit">
-      <h3>08 如何使用我的 GitHub <span class="pill md">Guide</span></h3>
-      <p>面试官 10 分钟路线、仓库分类、置顶清单、带逛话术。</p>
-    </a>
-    <a class="card" href="sections/09-bizcase.html" style="text-decoration:none;color:inherit">
-      <h3>09 商赛四件套 <span class="pill py">Python</span></h3>
-      <p>TAM/SAM/SOM · 竞品 · UE · 情景 · 波特五力 · 商业监控（苏州零售虚构案）。</p>
-    </a>
-    <a class="card" href="sections/10-agent-capability.html" style="text-decoration:none;color:inherit">
-      <h3>10 Chatbot 98008 <span class="pill js">腾讯</span></h3>
-      <p>独立全栈：Knot + 12 子 Agent + 书架 + Console / Gap。未命中 6%。</p>
-    </a>
-    <a class="card" href="sections/11-voc-agent.html" style="text-decoration:none;color:inherit">
-      <h3>11 VOC Agent <span class="pill js">理想</span></h3>
-      <p>独立全栈：无原声拒答 · Skill 白名单 · Insight Kit 治理。</p>
-    </a>
-    <a class="card" href="sections/12-layer-build.html" style="text-decoration:none;color:inherit">
-      <h3>12 分层建设 <span class="pill md">安全+</span></h3>
-      <p>L0–L4 还能公开建什么：白名单 · 发布脱敏 · 护栏评测。</p>
+    <a class="card" href="sections/co-tcl.html" style="text-decoration:none;color:inherit">
+      <h3>TCL <span class="pill js">HRIS / 用户分析</span></h3>
+      <p><strong>作用：</strong>HRIS 指标与看板 · 审批阻塞定位 · Prompt 规范降时长。<br/>
+      含：HRIS 原型</p>
     </a>
   </div>
 
-  <h2>统一设计原则</h2>
+  <h2>对应关系（防乱放）</h2>
   <table>
-    <thead><tr><th>原则</th><th>怎么落地</th></tr></thead>
+    <thead><tr><th>公司 · 简历职责</th><th>公开复刻放这里</th><th>不要当成</th></tr></thead>
     <tbody>
-      <tr><td>可解释</td><td>分数能拆回维度 / 原声；禁止黑盒结论直接进生产</td></tr>
-      <tr><td>可实验</td><td>改策略必须能算样本量、跑 z 检验、看校准</td></tr>
-      <tr><td>可护栏</td><td>推进、群发、话术发布前有硬规则拦截</td></tr>
-      <tr><td>可追溯</td><td>反馈、message_id、audit 日志</td></tr>
-      <tr><td>可演示</td><td>零依赖或极少依赖；虚构数据；Pages + 自测</td></tr>
+      <tr>
+        <td>理想 · 车主访谈/问卷、意向打分、竞品话术、跟进策略</td>
+        <td>VOC Kit / VOC Agent / 触达护栏 / Retail KPI</td>
+        <td>字节招聘、腾讯 SSC、TCL HRIS</td>
+      </tr>
+      <tr>
+        <td>字节 · 招聘 ETL、八维评分、质量治理、AB、校招网络</td>
+        <td>Talent Scoring / Stats Kit</td>
+        <td>理想 VOC、腾讯 98008</td>
+      </tr>
+      <tr>
+        <td>腾讯 · SSC 工作台、多 Agent 运营、知识缺口、费用分摊</td>
+        <td>Console / 98008 / Gap / Cost Allocation</td>
+        <td>理想触达、字节人才评分</td>
+      </tr>
+      <tr>
+        <td>TCL · HRIS 看板、用户访谈、审批提速</td>
+        <td>HRIS Prototype</td>
+        <td>腾讯工作台、理想经营舱</td>
+      </tr>
+      <tr>
+        <td>竞赛 / 方法学习（非上述实习交付）</td>
+        <td>商赛 Lab · Skills · Hiring Agent/Copilot（学习复刻）</td>
+        <td>某一家公司的线上产品</td>
+      </tr>
     </tbody>
   </table>
 
+  <h2>经历地图</h2>
+  <div class="mermaid">
+flowchart LR
+  LX[理想 · 销售策略] --> VOC[原声与话术]
+  LX --> KPI[经营诊断]
+  BY[字节 · 招聘数据] --> SCORE[八维评分]
+  BY --> AB[AB / 统计]
+  TX[腾讯 · AI 工作台] --> SSC[SSC Console]
+  TX --> AGENT[98008 / Gap]
+  TCL[TCL · HRIS] --> FLOW[审批与看板]
+  </div>
+
+  <p class="muted" style="margin-top:1.5rem">方法附录（Skills / 商赛 / GitHub 用法 / 分层建设 / 招聘 Agent 学习复刻）见 <a href="sections/co-appendix.html">附录</a>，不与四段实习平级混排。</p>
+
   <div class="footer">Anna Zhang · 公开学习手册 · 与实习内部系统无对应关系 · © 2026 张文婧 (Anna Zhang) · github.com/annawzhang · MIT · 保留署名</div>
 </main>
-<p class="anna-copyright" style="margin-top:28px;padding-top:12px;border-top:1px solid #e2e8f0;color:#64748b;font-size:0.78rem;">© 2026 张文婧 (Anna Zhang) · <a href="https://github.com/annawzhang">github.com/annawzhang</a> · MIT · 保留署名</p>
 </body>
 </html>

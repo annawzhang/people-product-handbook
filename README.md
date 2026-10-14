@@ -1,6 +1,6 @@
-# People Product Handbook · 人力产品开源手册
+# People Product Handbook
 
-**每个板块一页：架构图 · 引擎/API 调用 · Follow-up 面试追问 · 技术栈梳理 · Best practice · Demo 路径。**
+**按简历四段实习归类**（理想 / 字节 / 腾讯 / TCL），不再按「招聘 · 原声 · HRIS」主题平铺混放。
 
 
 > **Copyright © 2026 张文婧 (Anna Zhang)** · [MIT License](./LICENSE) · [github.com/annawzhang](https://github.com/annawzhang)  
@@ -11,23 +11,25 @@
 
 > **数据已脱敏**：对应公开复刻仓库；演示数据虚构。不含真实员工/门店/薪酬原文/内网与密钥。
 
-## 板块
+## 导航（对齐简历）
 
-| # | 板块 | Demo |
+| 入口 | 简历职责 / 作用 | 公开复刻 |
 |---|---|---|
-| 01 | [结构化招聘](sections/01-hiring.html) | [hiring-copilot](https://annawzhang.github.io/hiring-copilot/) |
-| 02 | [人才评估模型](sections/02-talent.html) | [explainable-talent-scoring](https://annawzhang.github.io/explainable-talent-scoring/) |
-| 03 | [人力量化统计](sections/03-stats.html) | [people-stats-kit](https://annawzhang.github.io/people-stats-kit/) |
-| 04 | [用户原声 Kit](sections/04-voc.html) | [voc-insight-kit](https://annawzhang.github.io/voc-insight-kit/) |
-| 05 | [触达护栏](sections/05-outreach.html) | [sales-ops-assistant](https://annawzhang.github.io/sales-ops-assistant/) |
-| 06 | [HRIS](sections/06-hris.html) | [hris-prototype](https://annawzhang.github.io/hris-prototype/?demo) |
-| 07 | [Skills / SOP](sections/07-skills.html) | [pm-hr-skills](https://github.com/annawzhang/pm-hr-skills) |
-| 08 | [如何使用我的 GitHub](sections/08-github-guide.html) | 面试官路线 / 置顶 / 带逛话术 |
-| 09 | [商赛四件套](sections/09-bizcase.html) | [bizcase-strategy-lab](https://annawzhang.github.io/bizcase-strategy-lab/) |
-| 10 | [Chatbot 98008 Agent](sections/10-agent-capability.html) | 腾讯企业智能体全栈 · [Console](https://annawzhang.github.io/enterprise-ai-console/) |
-| 11 | [VOC Agent](sections/11-voc-agent.html) | 理想原声智能体全栈 · [Demo](https://annawzhang.github.io/voc-voice-agent/) |
-| 12 | [分层建设](sections/12-layer-build.html) | 安全治理及其他层可公开建设地图 |
-| — | 招聘 Agent | [hiring-agent](https://annawzhang.github.io/hiring-agent/) |
+| [理想](sections/co-lixiang.html) | 车主&竞品策略 → 意向分层与话术跟进 → 邀约/试驾转化 | VOC Kit · VOC Agent · 触达护栏 · Retail KPI |
+| [字节](sections/co-byte.html) | 招聘 ETL → 八维量化 → AB/监控 → 校招决策 | Talent Scoring · Stats Kit |
+| [腾讯](sections/co-tencent.html) | SSC 工作台 0→1 · Agent 知识闭环 · 费用分摊提效 | 98008 · Console · Gap · Cost Allocation |
+| [TCL](sections/co-tcl.html) | HRIS 看板 · 用户访谈 · 审批提速 | HRIS Prototype |
+| [附录](sections/co-appendix.html) | 非实习交付：方法 / 竞赛 / 学习复刻 | Skills · 商赛 · GitHub 用法 · Hiring Agent（学习） |
+
+## 明细页（挂在公司入口下）
+
+| 页 | 归属 |
+|---|---|
+| [VOC Kit](sections/04-voc.html) · [VOC Agent](sections/11-voc-agent.html) · [触达护栏](sections/05-outreach.html) | 理想 |
+| [人才评分](sections/02-talent.html) · [统计工具箱](sections/03-stats.html) | 字节 |
+| [98008](sections/10-agent-capability.html) | 腾讯 |
+| [HRIS](sections/06-hris.html) | TCL |
+| [Hiring Agent](sections/01-hiring.html) · [Skills](sections/07-skills.html) · [商赛](sections/09-bizcase.html) · [GitHub 用法](sections/08-github-guide.html) · [分层建设](sections/12-layer-build.html) | 附录 |
 
 ## 本地预览
 

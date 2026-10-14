@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>12 分层建设 · Handbook</title>
+<link rel="stylesheet" href="../styles.css"/>
+</head>
+<body class="theme-agent">
+<header class="top">
+  <div class="brand"><strong>12 分层建设</strong><span>安全治理 + 其他层 · 可公开</span></div>
+  <nav class="nav">
+    <a href="../index.html">总览</a>
+    <a href="10-agent-capability.html">98008</a>
+    <a href="11-voc-agent.html">VOC Agent</a>
+    <a href="07-skills.html">Skills</a>
+    <a class="on" href="12-layer-build.html">分层建设</a>
+  </nav>
+</header>
+<main class="wrap">
+  <div class="hero">
+    <h1>安全治理层之外，还能建什么</h1>
+    <p class="warn" style="background:rgba(254,243,199,.2);border-color:#fbbf24;color:#e2e8f0">全部建议为<strong>零密钥公开资产</strong>；真实词库 / 部署密钥 / 企业底稿继续 Private。</p>
+    <p class="muted">在已有「减幻觉 + 内容安全」之外，按 L0–L4 补齐调度白名单、发布脱敏、护栏评测。</p>
+    <a class="cta" href="https://github.com/annawzhang/pm-hr-skills">Skills 仓</a>
+    <a class="cta ghost" href="07-skills.html">§07 Skills</a>
+  </div>
+
+  <h2>1. 分层建设地图</h2>
+  <div class="layer-stack">
+    <div class="layer-row l0"><div class="layer-tag">L0</div><div class="layer-body"><strong>入口</strong><span>会话匿名 id · 入口文案合规提示 · （可选）限流说明 — 不放真实网关配置</span></div></div>
+    <div class="layer-row l1"><div class="layer-tag">L1</div><div class="layer-body"><strong>主调度</strong><span>已建：意图优先级。新增：<a href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/tool-whitelist" style="color:#93c5fd">tool-whitelist</a> 越权调用直接拒</span></div></div>
+    <div class="layer-row l2"><div class="layer-tag">L2</div><div class="layer-body"><strong>Skill</strong><span>已建：citation / content-safety。可扩：领域工具仍走白名单 + 副作用确认</span></div></div>
+    <div class="layer-row l3"><div class="layer-tag">L3</div><div class="layer-body"><strong>知识</strong><span>cite 强制 · 虚构书架权限矩阵 · 过期证据标注（方法级）</span></div></div>
+    <div class="layer-row l4"><div class="layer-tag">L4</div><div class="layer-body"><strong>治理</strong><span>已建：安全分级。新增：<a href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/publish-desensitize" style="color:#93c5fd">发布脱敏</a> · <a href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/agent-eval-rails" style="color:#93c5fd">护栏评测</a></span></div></div>
+  </div>
+
+  <h2>2. 本次落地的 3 个 Skill</h2>
+  <table>
+    <thead><tr><th>Skill</th><th>层</th><th>一句话</th></tr></thead>
+    <tbody>
+      <tr><td><a href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/tool-whitelist">tool-whitelist</a></td><td>L1/L2</td><td>不在白名单的工具调用一律拒绝</td></tr>
+      <tr><td><a href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/publish-desensitize">publish-desensitize</a></td><td>L4</td><td>公开发布前扫手机号/密钥形态/内网</td></tr>
+      <tr><td><a href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/agent-eval-rails">agent-eval-rails</a></td><td>L4</td><td>最小用例证明该拒就拒、该引用就引用</td></tr>
+    </tbody>
+  </table>
+
+  <h2>3. 安全治理层还可加深（仍可公开）</h2>
+  <ul class="tight" style="color:#e2e8f0">
+    <li>误杀 / 漏拦复盘字段字典（匿名会话 id，无 PII）</li>
+    <li>话术包「发布门禁」检查表（对齐 Sales Ops 授权）</li>
+    <li>红队用例集（虚构）挂在 tests.html，而不是真实用户日志</li>
+  </ul>
+
+  <h2>4. 刻意不公开的</h2>
+  <p class="muted">真实敏感词库全文、企业微信 Secret、SMTP、生产网关、未脱敏问询日志 —— 继续 Private。</p>
+
+  <div class="footer">© 2026 张文婧 (Anna Zhang) · github.com/annawzhang · MIT · 保留署名</div>
+</main>
+</body>
+</html>

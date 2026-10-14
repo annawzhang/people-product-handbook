@@ -26,6 +26,7 @@
 | 09 | [商赛四件套](sections/09-bizcase.html) | [bizcase-strategy-lab](https://annawzhang.github.io/bizcase-strategy-lab/) |
 | 10 | [Chatbot 98008 Agent](sections/10-agent-capability.html) | 腾讯企业智能体全栈 · [Console](https://annawzhang.github.io/enterprise-ai-console/) |
 | 11 | [VOC Agent](sections/11-voc-agent.html) | 理想原声智能体全栈 · [Demo](https://annawzhang.github.io/voc-voice-agent/) |
+| 12 | [分层建设](sections/12-layer-build.html) | 安全治理及其他层可公开建设地图 |
 | — | 招聘 Agent | [hiring-agent](https://annawzhang.github.io/hiring-agent/) |
 
 ## 本地预览

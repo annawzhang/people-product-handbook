@@ -24,23 +24,32 @@
   <div class="hero">
     <h1>可公开贡献的 Agent Skills</h1>
     <p class="warn"><strong>零密钥：</strong>Skill / Playbook 不含 Token、内网、真实词库或员工数据；需要密钥的部署仓已 Private。</p>
-    <p class="muted">面试官可直接打开仓库复制 Skill；重点看「减幻觉」与「安全治理」两套通用护栏。</p>
+    <p class="muted">面试官可直接打开仓库复制 Skill。分层全景见 <a href="12-layer-build.html">§12</a>。</p>
     <a class="cta" href="https://github.com/annawzhang/pm-hr-skills">仓库 · pm-hr-skills</a>
-    <a class="cta ghost" href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/citation-grounding">减幻觉 Skill</a>
-    <a class="cta ghost" href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/content-safety-rails">安全治理 Skill</a>
+    <a class="cta ghost" href="12-layer-build.html">分层建设地图</a>
   </div>
 
-  <h2>1. 精选：两个通用护栏</h2>
+  <h2>1. 通用护栏（按层）</h2>
   <div class="grid">
     <div class="card">
-      <h3>citation-grounding · 减幻觉</h3>
-      <p>无引用不下结论；检索空则拒答；数字带样本与口径。对齐 VOC Agent / 招聘证据化初筛。</p>
-      <p style="margin-top:8px"><a href="https://github.com/annawzhang/pm-hr-skills/blob/main/skills/citation-grounding/SKILL.md">打开 SKILL.md →</a></p>
+      <h3>L3 减幻觉 · citation-grounding</h3>
+      <p>无引用不下结论。对齐 VOC / 招聘证据。</p>
+      <p style="margin-top:8px"><a href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/citation-grounding">打开 →</a></p>
     </div>
     <div class="card">
-      <h3>content-safety-rails · 安全治理</h3>
-      <p>P0–P3 分级处置；输入/输出双侧检查；虚构规则样例。对齐禁止话术 / 触达授权叙事。</p>
-      <p style="margin-top:8px"><a href="https://github.com/annawzhang/pm-hr-skills/blob/main/skills/content-safety-rails/SKILL.md">打开 SKILL.md →</a></p>
+      <h3>L4 安全治理 · content-safety-rails</h3>
+      <p>P0–P3 双侧检查。对齐禁止话术。</p>
+      <p style="margin-top:8px"><a href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/content-safety-rails">打开 →</a></p>
+    </div>
+    <div class="card">
+      <h3>L1 工具白名单 · tool-whitelist</h3>
+      <p>越权工具调用拒绝。对齐 Hiring Agent。</p>
+      <p style="margin-top:8px"><a href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/tool-whitelist">打开 →</a></p>
+    </div>
+    <div class="card">
+      <h3>L4 发布脱敏 / 护栏评测</h3>
+      <p>公开前扫描 · 最小拒绝用例集。</p>
+      <p style="margin-top:8px"><a href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/publish-desensitize">脱敏</a> · <a href="https://github.com/annawzhang/pm-hr-skills/tree/main/skills/agent-eval-rails">评测</a></p>
     </div>
   </div>
 

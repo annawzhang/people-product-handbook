@@ -24,6 +24,7 @@
     <a href="sections/06-hris.html">HRIS</a>
     <a href="sections/07-skills.html">Skills</a>
     <a href="sections/08-github-guide.html">GitHub 用法</a>
+    <a href="sections/09-bizcase.html">商赛</a>
   </nav>
 </header>
 <main class="wrap">
@@ -66,9 +67,13 @@ flowchart TB
   V --> OA
   O --> HR
   HA --> S
+  subgraph strategy [策略 / 商赛]
+    BC[市场 · 竞品 · UE · 情景]
+  end
+  S -.-> BC
   </div>
 
-  <h2>七个板块</h2>
+  <h2>板块地图</h2>
   <div class="grid">
     <a class="card" href="sections/01-hiring.html" style="text-decoration:none;color:inherit">
       <h3>01 结构化招聘 <span class="pill js">JS</span></h3>
@@ -101,6 +106,10 @@ flowchart TB
     <a class="card" href="sections/08-github-guide.html" style="text-decoration:none;color:inherit">
       <h3>08 如何使用我的 GitHub <span class="pill md">Guide</span></h3>
       <p>面试官 10 分钟路线、仓库分类、置顶清单、带逛话术。</p>
+    </a>
+    <a class="card" href="sections/09-bizcase.html" style="text-decoration:none;color:inherit">
+      <h3>09 商赛四件套 <span class="pill py">Python</span></h3>
+      <p>TAM/SAM/SOM · 竞品告警 · 单位经济 · 情景推演（苏州零售虚构案）。</p>
     </a>
   </div>
 

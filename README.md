@@ -4,7 +4,7 @@
 
 [在线阅读](https://annawzhang.github.io/people-product-handbook/) · 静态 HTML + Mermaid，无构建
 
-> 对应公开复刻仓库；数据均为虚构。
+> **数据已脱敏**：对应公开复刻仓库；演示数据虚构。不含真实员工/门店/薪酬原文/内网与密钥。
 
 ## 板块
 

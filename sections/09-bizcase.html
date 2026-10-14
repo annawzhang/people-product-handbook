@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>09 商赛四件套 · Handbook</title>
+<title>09 商赛策略 · Handbook</title>
 <link rel="stylesheet" href="../styles.css"/>
 <script type="module">
   import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
@@ -28,9 +28,9 @@
 </header>
 <main class="wrap">
   <div class="hero">
-    <h1>通用商赛四件套 → 可跑工具</h1>
-    <p class="muted">市场测算（TAM/SAM/SOM）· 竞品雷达与告警 · 单位经济 · 情景推演，外加评委追问包。<br/>
-    案例设定：虚构「苏州零售消费 · 社区优选品牌苏里优选」——假设可审计，不是拍脑袋总数。</p>
+    <h1>商赛方法 → 可跑工具</h1>
+    <p class="muted">市场测算 · 竞品雷达 · 单位经济 · 情景推演 · <strong>波特五力</strong> · <strong>商业监控</strong>。<br/>
+    案例：虚构「苏州零售消费 · 苏里优选」——假设可审计，灯与节奏写进配置。</p>
     <a class="cta" href="https://annawzhang.github.io/bizcase-strategy-lab/">Demo · 报告</a>
     <a class="cta ghost" href="https://github.com/annawzhang/bizcase-strategy-lab">GitHub</a>
   </div>
@@ -43,48 +43,40 @@ flowchart TB
   LOAD --> C[compete_matrix + alerts]
   LOAD --> U[unit_economics]
   LOAD --> S[run_scenarios]
-  M & C & U & S --> J[judge_pack]
-  M & C & U & S & J --> R[report.render]
+  LOAD --> P[porter_forces]
+  LOAD --> MON[monitor_board]
+  C & U --> MON
+  M & C & U & S & P & MON --> R[report.render]
   R --> HTML[docs/index.html]
-  </div>
-
-  <div class="mermaid">
-flowchart LR
-  subgraph market [市场漏斗]
-    P[人口] --> HH[家庭]
-    HH --> SP[年支出 TAM]
-    SP --> AD[可触达 × 赛道 SAM]
-    AD --> GEO[可服务地理]
-    GEO --> SOM[三年份额 SOM]
-  end
   </div>
 
   <h2>2. API / 引擎调用</h2>
   <table>
     <thead><tr><th>函数</th><th>场景</th><th>返回要点</th></tr></thead>
     <tbody>
-      <tr><td><code>market_sizing(cfg)</code></td><td>开口/防守市场规模</td><td>tam / sam / som_geo / som + narrative</td></tr>
-      <tr><td><code>compete_matrix(cfg)</code></td><td>竞品快照表</td><td>价格/SKU/NPS/份额/促销</td></tr>
-      <tr><td><code>compete_alerts(cfg)</code></td><td>今日动作优先级</td><td>P1/P2：份额、跟价、体验、促销战</td></tr>
-      <tr><td><code>unit_economics(cfg, …)</code></td><td>单均能否打平</td><td>贡献、首单净、回本月、healthy</td></tr>
+      <tr><td><code>market_sizing(cfg)</code></td><td>市场规模漏斗</td><td>tam / sam / som + narrative</td></tr>
+      <tr><td><code>compete_matrix / compete_alerts</code></td><td>竞品快照与 P1/P2</td><td>价格/SKU/NPS/份额/促销</td></tr>
+      <tr><td><code>unit_economics(cfg)</code></td><td>单均能否打平</td><td>贡献、回本、healthy</td></tr>
       <tr><td><code>run_scenarios(cfg)</code></td><td>乐观/基准/悲观</td><td>各情景 SOM + UE</td></tr>
-      <tr><td><code>judge_pack(cfg)</code></td><td>评委追问演练</td><td>6 道 Q&amp;A，绑定当前数字</td></tr>
+      <tr><td><code>porter_forces(cfg)</code></td><td>行业结构</td><td>五力强度 1–5、驱动、含义</td></tr>
+      <tr><td><code>monitor_board(cfg)</code></td><td>经营监控</td><td>KPI 红黄绿、周变化、事件流</td></tr>
     </tbody>
   </table>
 
-  <h3>改假设怎么重算</h3>
-<pre># 改 config/case.toml 里 target_share_y3 / cac / share_y3
-python3 run.py   # → docs/index.html
-# 评委改渗透率：同一路径即时出新 SOM / 回本</pre>
+  <h3>监控怎么打灯</h3>
+<pre># share / price / nps / margin / cac… 从竞品与 UE 回填 actual
+# [[monitor.kpis]] 写 target、warn/crit、owner、cadence、action
+# 竞品 P1/P2 ∪ KPI 红黄灯 → 事件流
+python3 run.py</pre>
 
   <h2>3. Follow-up</h2>
   <table>
     <thead><tr><th>追问</th><th>答法</th></tr></thead>
     <tbody>
-      <tr><td>市场规模会不会拍脑袋？</td><td>漏斗每层在 TOML；改一层即可重算，强调「假设可审计」。</td></tr>
-      <tr><td>为什么不跟全网低价？</td><td>P1 价格告警只跟核心 SKU；全面促销会打穿贡献与回本。</td></tr>
-      <tr><td>悲观情景还不成立怎么办？</td><td>收缩可服务地理与补贴，而不是加码 CAC。</td></tr>
-      <tr><td>和真实 BP / 赛题什么关系？</td><td>方法工具化练习；数据与品牌均为虚构，不上传真实 BP。</td></tr>
+      <tr><td>波特五力怎么落到动作？</td><td>每力有强度 + 驱动 +「对我方含义」；最紧的力优先对冲（如竞争→核心跟价、私域复购）。</td></tr>
+      <tr><td>监控节奏是什么？</td><td>日度价格/促销巡检；周度份额·UE·NPS；红灯当日给动作与负责人。</td></tr>
+      <tr><td>黄灯和红灯差在哪？</td><td>黄=逼近目标（warn）；红=击穿地板/天花板（crit），进 P1 事件流。</td></tr>
+      <tr><td>和真实 BP 什么关系？</td><td>方法工具化；数据虚构，不上传真实 BP。</td></tr>
     </tbody>
   </table>
 
@@ -92,28 +84,27 @@ python3 run.py   # → docs/index.html
   <table>
     <thead><tr><th>项</th><th>选择</th></tr></thead>
     <tbody>
-      <tr><td>依赖</td><td>仅 Python 标准库（tomllib / pathlib / unittest）</td></tr>
-      <tr><td>配置</td><td>TOML 案例包，行业可换</td></tr>
-      <tr><td>交付</td><td>HTML 报告 + 7 项 unittest</td></tr>
-      <tr><td>刻意不用</td><td>外部行情 API / Excel 宏（降低复现门槛）</td></tr>
+      <tr><td>依赖</td><td>仅 Python 标准库</td></tr>
+      <tr><td>配置</td><td>TOML：market / competitors / unit / scenarios / porter / monitor</td></tr>
+      <tr><td>交付</td><td>HTML 报告 + 8 项 unittest</td></tr>
     </tbody>
   </table>
 
   <h2>5. Best practices</h2>
   <ul class="tight">
-    <li>先写清漏斗口径（TAM 含不含什么），再填数字。</li>
-    <li>竞品告警分 P1/P2，汇报时只带「今日必做」。</li>
-    <li>单位经济健康线：贡献&gt;0 且回本 ≤ cap；否则先修毛利/履约再谈增长。</li>
-    <li>三情景同屏：让评委看到下行纪律，而不是只讲乐观故事。</li>
+    <li>五力先写驱动因素，再打分，避免「全是 4」空话。</li>
+    <li>监控指标必须有 owner + cadence + 纠偏动作。</li>
+    <li>红灯先收缩补贴/地理，再谈加码获客。</li>
+    <li>竞品告警与 KPI 灯合并进事件流，汇报只带「今日必做」。</li>
   </ul>
 
   <h2>6. Demo 路径</h2>
   <ol>
-    <li>打开报告：TAM → SAM → SOM 卡片，指一层假设。</li>
-    <li>竞品表 + P1 告警：份额/价格怎么应对。</li>
-    <li>单位经济：单均贡献与回本月。</li>
-    <li>情景表：悲观 vs 乐观 SOM；读评委追问包一条。</li>
-    <li><code>python3 -m unittest discover -s tests -v</code>（7 passed）。</li>
+    <li>TAM→SAM→SOM 卡片，指一层假设。</li>
+    <li>竞品 P1 告警 → 单位经济回本。</li>
+    <li>波特五力：指「最紧」那一行。</li>
+    <li>监控看板：黄/红灯 + 事件流一条。</li>
+    <li><code>python3 -m unittest discover -s tests -v</code>（8 passed）。</li>
   </ol>
 
   <div class="footer"><a href="08-github-guide.html">← GitHub 用法</a> · <a href="../index.html">回总览</a></div>

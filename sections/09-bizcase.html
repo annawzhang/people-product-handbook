@@ -28,9 +28,9 @@
 </header>
 <main class="wrap">
   <div class="hero">
-    <h1>商赛方法 → 可跑工具</h1>
-    <p class="muted">市场测算 · 竞品雷达 · 单位经济 · 情景推演 · <strong>波特五力</strong> · <strong>商业监控</strong>。<br/>
-    案例：虚构「苏州零售消费 · 苏里优选」——假设可审计，灯与节奏写进配置。</p>
+    <h1>商赛 SOP → 架构映射 → 可跑工具</h1>
+    <p class="muted">对齐<strong>全国高校商业精英挑战赛 · 品牌策划赛道</strong>公开细则：简介与贡献 + 市场/竞品/UE/情景/五力/监控。<br/>
+    真实履历：宋锦全国三等奖；本仓演示：虚构苏里优选（苏州零售）。</p>
     <a class="cta" href="https://annawzhang.github.io/bizcase-strategy-lab/">Demo · 报告</a>
     <a class="cta ghost" href="https://github.com/annawzhang/bizcase-strategy-lab">GitHub</a>
   </div>
@@ -39,6 +39,7 @@
   <div class="mermaid">
 flowchart TB
   TOML[config/case.toml] --> LOAD[load_case]
+  LOAD --> B[competition_brief]
   LOAD --> M[market_sizing]
   LOAD --> C[compete_matrix + alerts]
   LOAD --> U[unit_economics]
@@ -46,14 +47,23 @@ flowchart TB
   LOAD --> P[porter_forces]
   LOAD --> MON[monitor_board]
   C & U --> MON
-  M & C & U & S & P & MON --> R[report.render]
+  B & M & C & U & S & P & MON --> R[report.render]
   R --> HTML[docs/index.html]
+  </div>
+
+  <div class="mermaid">
+flowchart LR
+  K[知识赛] --> X[校赛]
+  X --> Y[省赛/预选]
+  Y --> N[全国总决赛]
+  N --> E[精英/全球]
   </div>
 
   <h2>2. API / 引擎调用</h2>
   <table>
     <thead><tr><th>函数</th><th>场景</th><th>返回要点</th></tr></thead>
     <tbody>
+      <tr><td><code>competition_brief(cfg)</code></td><td>商赛简介/架构/贡献</td><td>SOP 赛程、策划书映射、评分、贡献</td></tr>
       <tr><td><code>market_sizing(cfg)</code></td><td>市场规模漏斗</td><td>tam / sam / som + narrative</td></tr>
       <tr><td><code>compete_matrix / compete_alerts</code></td><td>竞品快照与 P1/P2</td><td>价格/SKU/NPS/份额/促销</td></tr>
       <tr><td><code>unit_economics(cfg)</code></td><td>单均能否打平</td><td>贡献、回本、healthy</td></tr>
@@ -85,8 +95,8 @@ python3 run.py</pre>
     <thead><tr><th>项</th><th>选择</th></tr></thead>
     <tbody>
       <tr><td>依赖</td><td>仅 Python 标准库</td></tr>
-      <tr><td>配置</td><td>TOML：market / competitors / unit / scenarios / porter / monitor</td></tr>
-      <tr><td>交付</td><td>HTML 报告 + 8 项 unittest</td></tr>
+      <tr><td>配置</td><td>TOML：competition / market / competitors / unit / scenarios / porter / monitor</td></tr>
+      <tr><td>交付</td><td>HTML 报告 + 9 项 unittest</td></tr>
     </tbody>
   </table>
 
@@ -100,11 +110,10 @@ python3 run.py</pre>
 
   <h2>6. Demo 路径</h2>
   <ol>
-    <li>TAM→SAM→SOM 卡片，指一层假设。</li>
-    <li>竞品 P1 告警 → 单位经济回本。</li>
-    <li>波特五力：指「最紧」那一行。</li>
-    <li>监控看板：黄/红灯 + 事件流一条。</li>
-    <li><code>python3 -m unittest discover -s tests -v</code>（8 passed）。</li>
+    <li>§0：SOP 赛程 + 策划书映射 + 宋锦贡献。</li>
+    <li>TAM→SAM→SOM 与竞品 P1。</li>
+    <li>波特五力「最紧」一行 + 监控黄/红灯。</li>
+    <li><code>python3 -m unittest discover -s tests -v</code>（9 passed）。</li>
   </ol>
 
   <div class="footer"><a href="08-github-guide.html">← GitHub 用法</a> · <a href="../index.html">回总览</a></div>
